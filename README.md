@@ -98,6 +98,10 @@ configuración, documentación, datos y salidas compartidas. El PDF pedía
 raíz; por decisión de legibilidad (AP-09) esas carpetas se conservan **dentro**
 de su parte. El movimiento no cambia el comportamiento del pipeline.
 
+La justificación completa de la estructura, el contenido de cada carpeta y su
+correspondencia con la distribución pedida está en
+[docs/JUSTIFICACION_ESTRUCTURA.md](docs/JUSTIFICACION_ESTRUCTURA.md).
+
 Los archivos de `datos/` son copia byte a byte del kit entregado
 (`md5` verificado). No se editan a mano: todas las correcciones quedan en el
 pipeline y en la hoja **Calidad** del reporte.

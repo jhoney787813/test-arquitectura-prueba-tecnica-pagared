@@ -32,4 +32,5 @@
 ## Resultado
 
 - Commit: `refactor: organizar el repositorio por partes y agregar Gherkin (AP-09)` en el historial de Git.
+- Documento de justificación: [`docs/JUSTIFICACION_ESTRUCTURA.md`](../../../docs/JUSTIFICACION_ESTRUCTURA.md).
 - Verificación: 58 pruebas (`pytest`), `ruff` y `openspec validate --changes --strict` en verde.

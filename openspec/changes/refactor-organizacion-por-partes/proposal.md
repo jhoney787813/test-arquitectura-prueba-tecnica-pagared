@@ -23,8 +23,9 @@ OpenSpec, configuración y archivos compartidos que no son código.
   parte, con historia de usuario y escenarios Gherkin.
 - Se actualizan `pyproject.toml`, Makefile, CI, README, rutas de configuración y
   referencias de OpenSpec.
-- Se documenta la desviación frente a la estructura literal del PDF y su
-  justificación.
+- Se documenta la desviación frente a la estructura literal del PDF, el
+  contenido de cada parte y su justificación en
+  `docs/JUSTIFICACION_ESTRUCTURA.md`.
 
 ## Capabilities
 
