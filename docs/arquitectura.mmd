@@ -1,0 +1,39 @@
+```mermaid
+flowchart LR
+    subgraph ORIGEN["Origen de datos"]
+        CORE["Core transaccional<br/>transacciones.csv / delta<br/>UTC"]
+        MAESTRO["Maestro de puntos<br/>puntos_venta.csv (Latin-1)"]
+        SFTP["SFTP del proveedor<br/>entrega y archivos de control"]
+    end
+
+    subgraph JENKINS["Jenkins · agente-etl"]
+        CRON["cron 06:00<br/>America/Bogota"]
+        JOB["Job pagared_ventas_diario<br/>sin ejecuciones concurrentes"]
+    end
+
+    subgraph ETL["Contenedor ETL · Python 3.11"]
+        VAL["1. Validar layout, frescura<br/>y archivo de control"]
+        LIM["2. Limpiar y normalizar<br/>fechas, estados, valores"]
+        DIM["3. Dimensiones SCD2<br/>y tabla de hechos"]
+        UPS["4. Carga idempotente<br/>UPSERT por id_transaccion"]
+        REP["5. Reporte Excel<br/>Resumen / Comparativo / Calidad"]
+        EML["6. Correo .eml o SMTP<br/>con clave de envío única"]
+    end
+
+    DB[("dw_pagared<br/>SQLite / PostgreSQL")]
+    XLSX["salida/reporte_ventas_YYYYMMDD.xlsx"]
+    MAIL["Correo a Laura<br/>6:00 a.m. Colombia"]
+    PBI["Power BI<br/>tablero mensual"]
+    ALERTA["Alerta<br/>archivo faltante o job fallido"]
+
+    CORE --> VAL
+    MAESTRO --> VAL
+    SFTP -.-> VAL
+    CRON --> JOB --> VAL
+    VAL --> LIM --> DIM --> UPS --> DB
+    UPS --> REP --> XLSX
+    REP --> EML --> MAIL
+    DB --> PBI
+    VAL -.->|"sin archivo / layout inválido"| ALERTA
+    JOB -.->|"exit code != 0"| ALERTA
+```

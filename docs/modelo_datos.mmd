@@ -1,0 +1,97 @@
+```mermaid
+erDiagram
+    DIM_FECHA ||--o{ FACT_TRANSACCIONES : fecha_sk
+    DIM_PUNTO ||--o{ FACT_TRANSACCIONES : punto_sk
+    DIM_PRODUCTO ||--o{ FACT_TRANSACCIONES : producto_sk
+    DIM_CANAL ||--o{ FACT_TRANSACCIONES : canal_sk
+    DIM_ESTADO ||--o{ FACT_TRANSACCIONES : estado_sk
+    ETL_CARGAS ||--o{ ETL_DESCARTES : id_carga
+
+    DIM_FECHA {
+        INTEGER fecha_sk PK
+        DATE fecha
+        INTEGER anio
+        INTEGER mes
+        INTEGER dia
+        INTEGER dia_semana
+        TEXT nombre_mes
+        INTEGER es_fin_semana
+    }
+
+    DIM_PUNTO {
+        INTEGER punto_sk PK
+        TEXT cod_punto
+        TEXT nombre
+        TEXT zona
+        TEXT activo
+        DATE valido_desde
+        DATE valido_hasta
+        INTEGER es_actual
+    }
+
+    DIM_PRODUCTO {
+        INTEGER producto_sk PK
+        TEXT producto
+    }
+
+    DIM_CANAL {
+        INTEGER canal_sk PK
+        TEXT canal
+    }
+
+    DIM_ESTADO {
+        INTEGER estado_sk PK
+        TEXT estado
+        INTEGER cuenta_como_venta
+    }
+
+    FACT_TRANSACCIONES {
+        TEXT id_transaccion PK
+        INTEGER fecha_sk FK
+        INTEGER punto_sk FK
+        INTEGER producto_sk FK
+        INTEGER canal_sk FK
+        INTEGER estado_sk FK
+        INTEGER valor_cop
+        DATETIME fecha_hora_utc
+        DATETIME fecha_hora_local
+        DATETIME fecha_actualizacion_utc
+        DATETIME cargado_en
+    }
+
+    ETL_CARGAS {
+        INTEGER id_carga PK
+        DATE fecha_corte
+        TEXT archivo
+        TEXT modo
+        INTEGER leidos
+        INTEGER descartados
+        INTEGER cargados
+        INTEGER insertados
+        INTEGER actualizados
+        INTEGER ignorados
+        TEXT estado
+        DATETIME inicio
+        DATETIME fin
+    }
+
+    ETL_DESCARTES {
+        INTEGER id_descarte PK
+        INTEGER id_carga FK
+        TEXT archivo
+        INTEGER fila
+        TEXT id_transaccion
+        TEXT motivo
+        TEXT detalle
+    }
+
+    ETL_ENVIOS {
+        INTEGER id_envio PK
+        DATE fecha_corte
+        TEXT tipo
+        TEXT destinatarios
+        TEXT clave_idempotencia
+        TEXT estado
+        DATETIME enviado_en
+    }
+```
