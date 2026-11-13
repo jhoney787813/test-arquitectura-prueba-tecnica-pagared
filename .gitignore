@@ -1,0 +1,43 @@
+# Entornos virtuales
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# Herramientas
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Secretos: nunca versionar .env reales
+.env
+.env.*
+!.env.example
+
+# Base de datos local generada por el pipeline
+db/*.db
+db/*.db-journal
+db/*.db-wal
+db/*.db-shm
+
+# Logs de ejecución (se versiona solo la carpeta)
+logs/*.log
+logs/*.log.*
+
+# Archivos temporales
+*.tmp
+*.bak
+~$*
+
+# Sistema operativo / editor
+.DS_Store
+.idea/
+.vscode/
