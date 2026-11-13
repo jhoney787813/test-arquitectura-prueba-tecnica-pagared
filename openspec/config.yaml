@@ -1,0 +1,53 @@
+schema: spec-driven
+
+context: |
+  Language: español
+  All artifacts must be written in español.
+  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+
+  Proyecto: solución a la prueba técnica de Desarrollador de Arquitectura de
+  Software de PagaRed S.A.S. (caso ficticio de Grupo Réditos). El repositorio
+  entrega el análisis (B1), un pipeline ETL en Python (B2), consultas SQL (B3),
+  la revisión de un script de envío (B4), la operación y el despliegue (B5), el
+  diseño del tablero de Power BI (B6) y un informe consolidado en PDF.
+
+  Datos: CSV del core en UTC (transacciones y delta del 28/10) y maestro de
+  puntos en Latin-1. Fecha de corte 2026-10-27. El día contable es
+  America/Bogota, no UTC. Reglas de negocio: cuentan como venta APROBADA y
+  REVERSADA; se excluye el punto de pruebas 90001; el cargue y el envío deben
+  ser idempotentes; toda falla debe terminar con exit code distinto de 0.
+
+  Stack: Python 3.11, pandas, openpyxl, SQLite (sqlite3), pytest, ruff y Docker.
+  Convenciones: código y documentación en español; dinero con Decimal/pesos
+  enteros (nunca float en sumas); commits convencionales; sin credenciales ni
+  archivos .env con secretos en el repositorio.
+
+rules:
+  proposal:
+    - Explicar el problema, el alcance y lo que queda fuera de alcance.
+    - No incluir secretos, credenciales ni datos personales.
+  tasks:
+    - Agrupar las tareas por parte de la prueba (B2 a B6).
+    - Marcar como tarea la verificación con pytest y ruff.
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always state what is out of scope
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing

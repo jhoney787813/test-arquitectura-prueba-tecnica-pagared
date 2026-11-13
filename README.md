@@ -1,9 +1,10 @@
 # Prueba Técnica — Solución de Arquitectura de Software | PagaRed S.A.S.
 
-**Candidato:** Jhon E.  
-**Contexto:** prueba técnica de Desarrollador de Arquitectura de Software (Grupo Réditos — Dirección de Inteligencia Empresarial)  
-**Fecha de corte de los resultados:** 27 de octubre de 2026  
-**Repositorio:** privado (se comparte con el evaluador al finalizar)
+- **Candidato:** Jhon E.
+- **Contexto:** prueba técnica de Desarrollador de Arquitectura de Software (Grupo Réditos — Dirección de Inteligencia Empresarial)
+- **Fecha de corte de los resultados:** 27 de octubre de 2026
+- **Fecha de entrega:** 14 de noviembre de 2026
+- **Repositorio:** privado (se comparte con el evaluador al finalizar)
 
 Solución al caso de PagaRed S.A.S.: automatizar el reporte diario de ventas que
 hoy prepara Paola en Excel durante tres horas, dejarlo disponible para Power BI
@@ -68,6 +69,10 @@ Reglas de negocio tomadas del correo de la Gerente Comercial:
 ├── revision/                   # B4: enviar_reporte_v2.py
 ├── infra/                      # B5: Dockerfile y Terraform opcional
 ├── powerbi/                    # B6: .pbix, capturas y medidas DAX
+├── openspec/                   # especificaciones y cambio planificado
+│   ├── config.yaml             # contexto del caso y reglas para los artefactos
+│   └── changes/implementar-solucion-prueba-tecnica/
+├── .agents/skills/             # skills de OpenSpec para DeepSeek Harness
 ├── salida/                     # reporte_ventas_YYYYMMDD.xlsx + .eml
 ├── db/                         # SQLite generada (no se versiona)
 ├── logs/                       # logs de ejecución (no se versionan)
@@ -106,6 +111,38 @@ source .venv/bin/activate
 pip install -e ".[dev]"
 pytest -q
 ```
+
+### 4.1 Especificaciones y flujo de trabajo (OpenSpec)
+
+El proyecto usa [OpenSpec](https://openspec.dev) 2.x como capa de
+especificaciones antes de escribir código. La instalación global es:
+
+```bash
+npm install -g @fission-ai/openspec@latest   # requiere Node.js 22.12+
+```
+
+El cambio `implementar-solucion-prueba-tecnica` contiene el análisis completo en
+`openspec/changes/implementar-solucion-prueba-tecnica/`:
+
+- `proposal.md`: por qué y qué cambia, con las 7 capacidades del sistema.
+- `specs/`: requisitos y escenarios de ingesta, almacén, reporte, envío,
+  consultas, operación y tablero.
+- `design.md`: decisiones técnicas (SQLite, zona horaria, SCD2, idempotencia,
+  dinero exacto, Docker y Power BI).
+- `tasks.md`: 45 tareas verificables agrupadas por parte de la prueba.
+
+Comandos útiles:
+
+```bash
+make spec              # lista los cambios activos
+make spec-validate     # valida el cambio en modo estricto
+openspec status --change implementar-solucion-prueba-tecnica
+openspec show implementar-solucion-prueba-tecnica
+```
+
+Las skills de OpenSpec quedaron instaladas en `.agents/skills/` para que
+DeepSeek Harness pueda proponer, aplicar y archivar cambios con
+`/openspec-propose`, `/openspec-apply-change` y `/openspec-archive-change`.
 
 ---
 

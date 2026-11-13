@@ -8,7 +8,7 @@ DELTA ?= datos/transacciones_delta_20261028.csv
 
 .DEFAULT_GOAL := ayuda
 
-.PHONY: ayuda setup test lint fmt perfil etl etl-delta limpiar
+.PHONY: ayuda setup test lint fmt perfil spec spec-validate limpiar
 
 ayuda:
 	@echo "Objetivos disponibles:"
@@ -17,6 +17,8 @@ ayuda:
 	@echo "  make lint        Ejecuta ruff"
 	@echo "  make fmt         Formatea el código con ruff"
 	@echo "  make perfil      Perfila los CSV de entrada"
+	@echo "  make spec        Lista los cambios de OpenSpec"
+	@echo "  make spec-validate  Valida el cambio OpenSpec en modo estricto"
 	@echo "  make limpiar     Borra cachés locales"
 
 setup:
@@ -35,6 +37,12 @@ fmt:
 
 perfil:
 	$(BIN)/python scripts/perfil_datos.py --detalle
+
+spec:
+	openspec list
+
+spec-validate:
+	openspec validate "implementar-solucion-prueba-tecnica" --strict
 
 limpiar:
 	rm -rf .pytest_cache .ruff_cache
