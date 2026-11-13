@@ -10,7 +10,7 @@ de negocio, no solo para almacenar.
 
 ## What Changes
 
-- Se crea `sql/consultas.sql` con una consulta comentada por pregunta.
+- Se crea `parte-3-b3-sql/sql/consultas.sql` con una consulta comentada por pregunta.
 - Se agrega el índice necesario sobre el hecho y se reescribe la consulta de
   producción con filtros SARGables.
 - Se documentan los resultados de cada consulta para el `2026-10-27` con el
@@ -31,8 +31,8 @@ Ninguna.
 
 ## Impact
 
-- `sql/consultas.sql`, índice en el esquema del hecho y nuevo script de
+- `parte-3-b3-sql/sql/consultas.sql`, índice en el esquema del hecho y nuevo script de
   consultas.
-- Pruebas en `tests/` que usan una base temporal con el delta.
+- Pruebas en `parte-3-b3-sql/tests/` que usan una base temporal con el delta.
 - Sección 4 del informe con los resultados.
 - No cambia el modelo de datos ni la carga.

@@ -2,7 +2,7 @@
 
 ## 1. Consultas de negocio
 
-- [ ] 1.1 Escribir en `sql/consultas.sql` la consulta de top 3 por zona con `ROW_NUMBER` y desempate por código; verificar con una prueba sobre una base temporal
+- [ ] 1.1 Escribir en `parte-3-b3-sql/sql/consultas.sql` la consulta de top 3 por zona con `ROW_NUMBER` y desempate por código; verificar con una prueba sobre una base temporal
 - [ ] 1.2 Escribir la consulta de puntos activos sin ventas para la fecha de corte; verificar que excluya inactivos y que devuelva los puntos sin filas
 - [ ] 1.3 Escribir la consulta de variación por zona con ventas del día, del día anterior y porcentaje; verificar el caso de zona sin día anterior
 - [ ] 1.4 Ejecutar las tres consultas sobre la base con el delta del 28/10 y guardar los resultados para el informe

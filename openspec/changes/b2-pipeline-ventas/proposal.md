@@ -40,9 +40,9 @@ Ninguna: las capacidades se introducen en esta feat.
 
 ## Impact
 
-- Código nuevo en `etl/` (`lectura.py`, `negocio.py`, `carga.py`, `reporte.py`,
+- Código nuevo en `parte-2-b2-pipeline/etl/` (`lectura.py`, `negocio.py`, `carga.py`, `reporte.py`,
   `cli.py`, `__main__.py`) y ampliación de `limpieza.py` y `fechas.py`.
-- Pruebas nuevas en `tests/` para limpieza, carga y reporte.
+- Pruebas nuevas en `parte-2-b2-pipeline/tests/` para limpieza, carga y reporte.
 - Esquema y datos en `db/`, reporte en `salida/`, logs en `logs/`.
 - Dependencias: `pandas` y `openpyxl` (ya declaradas); no se agregan servicios
   externos.

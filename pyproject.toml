@@ -25,24 +25,29 @@ dependencies = [
 dev = [
     "pytest>=8.0",
     "ruff>=0.6",
+    "gherkin-official>=43.0",
 ]
 
+[tool.setuptools]
+package-dir = { "" = "parte-2-b2-pipeline" }
+
 [tool.setuptools.packages.find]
+where = ["parte-2-b2-pipeline"]
 include = ["etl*"]
 
 [tool.pytest.ini_options]
 minversion = "8.0"
-testpaths = ["tests"]
+testpaths = ["parte-2-b2-pipeline/tests"]
 addopts = "-ra"
 
 [tool.ruff]
 line-length = 100
 target-version = "py310"
-src = ["etl", "tests", "scripts"]
+src = ["parte-2-b2-pipeline", "parte-3-b3-sql", "parte-4-b4-revision"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "W", "UP", "B", "SIM"]
 ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101"]
+"parte-2-b2-pipeline/tests/*" = ["S101"]

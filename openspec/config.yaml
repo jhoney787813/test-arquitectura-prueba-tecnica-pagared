@@ -22,12 +22,25 @@ context: |
   enteros (nunca float en sumas); commits convencionales; sin credenciales ni
   archivos .env con secretos en el repositorio.
 
+  Organización: cada parte de la prueba vive en una carpeta `parte-N-...`
+  (parte-1 B1, parte-2 B2, parte-3 B3, parte-4 B4, parte-5 B5, parte-6 B6 y
+  parte-7 Parte A, al final). El código, las pruebas y las respuestas de una
+  parte SHALL vivir dentro de su carpeta; la raíz solo conserva OpenSpec,
+  configuración, documentación, datos y salidas compartidas.
+
+  Gherkin: cada parte SHALL incluir `features/*.feature` con la historia de
+  usuario y escenarios Given/When/Then. Los escenarios Gherkin son la vista de
+  negocio de los requisitos de OpenSpec y SHALL mantenerse alineados con ellos.
+
 rules:
   proposal:
     - Explicar el problema, el alcance y lo que queda fuera de alcance.
     - No incluir secretos, credenciales ni datos personales.
+  specs:
+    - Cada capacidad SHALL tener su archivo Gherkin en `features/` de la parte.
+    - Los escenarios Gherkin SHALL cubrir los requisitos y criterios de aceptación del spec.
   tasks:
-    - Agrupar las tareas por parte de la prueba (B2 a B6).
+    - Agrupar las tareas por parte de la prueba (B1 a B6 y Parte A al final).
     - Marcar como tarea la verificación con pytest y ruff.
 
 # Per-artifact rules (optional)

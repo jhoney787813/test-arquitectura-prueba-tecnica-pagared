@@ -2,9 +2,9 @@
 
 ## 1. Lectura, validación y CLI
 
-- [ ] 1.1 Implementar `etl/lectura.py` con detección de encoding, separador `;`, tipos y validación de columnas; verificar con `pytest tests/test_lectura.py` sobre los tres CSV del kit
+- [ ] 1.1 Implementar `parte-2-b2-pipeline/etl/lectura.py` con detección de encoding, separador `;`, tipos y validación de columnas; verificar con `pytest parte-2-b2-pipeline/tests/test_lectura.py` sobre los tres CSV del kit
 - [ ] 1.2 Implementar la validación de archivo faltante, archivo vacío, columna faltante y frescura; verificar que cada caso termine con código distinto de 0
-- [ ] 1.3 Implementar `etl/cli.py` y `etl/__main__.py` con `--fecha-corte`, `--delta`, `--db`, `--salida` y logging; verificar `python -m etl --help` y un argumento inválido con código 2
+- [ ] 1.3 Implementar `parte-2-b2-pipeline/etl/cli.py` y `parte-2-b2-pipeline/etl/__main__.py` con `--fecha-corte`, `--delta`, `--db`, `--salida` y logging; verificar `python -m etl --help` y un argumento inválido con código 2
 - [ ] 1.4 Documentar los parámetros del CLI en el README y verificar que los comandos documentados funcionen
 
 ## 2. Limpieza y reglas de negocio

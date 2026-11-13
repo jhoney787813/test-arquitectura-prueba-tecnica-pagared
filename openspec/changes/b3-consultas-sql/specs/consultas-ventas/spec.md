@@ -59,7 +59,7 @@ recorrer las 80 millones de filas.
 
 ### Requirement: Consultas documentadas y reproducibles
 
-El repositorio SHALL incluir `sql/consultas.sql` con una consulta comentada por
+El repositorio SHALL incluir `parte-3-b3-sql/sql/consultas.sql` con una consulta comentada por
 pregunta y SHALL documentar en el informe el resultado obtenido sobre la base
 con el delta aplicado.
 

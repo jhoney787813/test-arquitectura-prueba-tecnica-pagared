@@ -9,6 +9,7 @@ from __future__ import annotations
 import csv
 
 import pytest
+
 from etl.config import (
     ARCHIVO_DELTA,
     ARCHIVO_PUNTOS,

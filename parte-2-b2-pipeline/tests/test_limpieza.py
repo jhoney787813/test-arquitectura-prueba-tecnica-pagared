@@ -5,6 +5,7 @@ from __future__ import annotations
 from decimal import Decimal
 
 import pytest
+
 from etl.limpieza import (
     a_pesos_enteros,
     normalizar_canal,

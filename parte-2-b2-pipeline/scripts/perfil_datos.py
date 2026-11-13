@@ -17,6 +17,7 @@ from collections import Counter
 from pathlib import Path
 
 import pandas as pd
+
 from etl.config import (
     ARCHIVO_DELTA,
     ARCHIVO_PUNTOS,

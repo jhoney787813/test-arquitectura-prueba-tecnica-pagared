@@ -36,13 +36,13 @@ fmt:
 	$(BIN)/ruff format .
 
 perfil:
-	$(BIN)/python scripts/perfil_datos.py --detalle
+	$(BIN)/python parte-2-b2-pipeline/scripts/perfil_datos.py --detalle
 
 spec:
 	openspec list
 
 spec-validate:
-	openspec validate "implementar-solucion-prueba-tecnica" --strict
+	openspec validate --changes --strict
 
 limpiar:
 	rm -rf .pytest_cache .ruff_cache

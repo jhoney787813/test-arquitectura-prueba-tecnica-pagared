@@ -22,13 +22,13 @@ y operarlo de forma confiable (idempotente, observable y con alertas).
 
 | Parte | Entregable | Estado |
 | :---: | :--- | :--- |
-| A | Respuestas teóricas (10 preguntas) | Pendiente |
-| B1 | Análisis del requerimiento y arquitectura → [docs/informe.md](docs/informe.md) | Borrador completo |
-| B2 | Pipeline ETL, modelo dimensional, reporte y pruebas | En curso (utilidades de limpieza y fechas listas) |
-| B3 | [sql/](sql/) (`consultas.sql`) | Pendiente |
-| B4 | [revision/enviar_reporte_v2.py](revision/) | Pendiente |
-| B5 | [infra/](infra/) y análisis del incidente | Pendiente |
-| B6 | [powerbi/](powerbi/) | Pendiente (diseño DAX) |
+| A | Respuestas teóricas (10 preguntas) → [parte-7](parte-7-parte-a-teoria/) | Pendiente (última) |
+| B1 | Análisis del requerimiento y arquitectura → [parte-1](parte-1-b1-analisis/) | Borrador completo |
+| B2 | Pipeline ETL, modelo dimensional, reporte y pruebas → [parte-2](parte-2-b2-pipeline/) | En curso (utilidades de limpieza y fechas listas) |
+| B3 | Consultas SQL → [parte-3](parte-3-b3-sql/) | Pendiente |
+| B4 | Revisión y envío corregido → [parte-4](parte-4-b4-revision/) | Pendiente |
+| B5 | Operación, incidente y despliegue → [parte-5](parte-5-b5-operacion/) | Pendiente |
+| B6 | Tablero de Power BI → [parte-6](parte-6-b6-powerbi/) | Pendiente (diseño DAX) |
 | — | Informe consolidado PDF | Pendiente de compilar |
 
 ---
@@ -56,28 +56,47 @@ Reglas de negocio tomadas del correo de la Gerente Comercial:
 ```text
 .
 ├── README.md
-├── pyproject.toml              # dependencias, pytest y ruff
+├── pyproject.toml              # configuración, dependencias, pytest y ruff
 ├── Makefile                    # atajos: setup, test, lint, perfil
 ├── datos/                      # CSV de entrada del kit (sin transformar)
-├── etl/                        # B2: lectura, limpieza, carga, reporte, CLI
-│   ├── config.py               # rutas, encodings y reglas de negocio
-│   ├── fechas.py               # parseo UTC y conversión a America/Bogota
-│   └── limpieza.py             # normalización de estados, códigos, valores
-├── tests/                      # B2: pytest (contratos, limpieza, incremental)
-├── scripts/perfil_datos.py     # perfilado reproducible de los CSV
-├── sql/consultas.sql           # B3
-├── revision/                   # B4: enviar_reporte_v2.py
-├── infra/                      # B5: Dockerfile y Terraform opcional
-├── powerbi/                    # B6: .pbix, capturas y medidas DAX
-├── openspec/                   # especificaciones y cambio planificado
-│   ├── config.yaml             # contexto del caso y reglas para los artefactos
-│   └── changes/implementar-solucion-prueba-tecnica/
-├── .agents/skills/             # skills de OpenSpec para DeepSeek Harness
 ├── salida/                     # reporte_ventas_YYYYMMDD.xlsx + .eml
 ├── db/                         # SQLite generada (no se versiona)
 ├── logs/                       # logs de ejecución (no se versionan)
-└── docs/                       # informe, diagramas Mermaid y decisiones
+├── docs/                       # informe, diagramas Mermaid y decisiones
+├── openspec/                   # especificaciones, cambios y aprobaciones
+├── .agents/skills/             # skills de OpenSpec para DeepSeek Harness
+├── .github/workflows/          # CI con ruff + pytest
+├── parte-1-b1-analisis/        # análisis, preguntas, supuestos y arquitectura
+│   ├── README.md
+│   └── features/analisis-requerimiento.feature
+├── parte-2-b2-pipeline/        # pipeline ETL y pruebas
+│   ├── etl/                    # paquete Python
+│   ├── tests/                  # pytest
+│   ├── scripts/                # perfilado de datos
+│   └── features/               # ingesta, almacén y reporte
+├── parte-3-b3-sql/             # consultas SQL
+│   ├── sql/consultas.sql
+│   └── features/consultas-ventas.feature
+├── parte-4-b4-revision/        # revisión del script de envío
+│   ├── revision/enviar_reporte_v2.py
+│   └── features/envio-reporte.feature
+├── parte-5-b5-operacion/       # Docker, despliegue, incidente y Azure
+│   ├── infra/
+│   └── features/operacion-etl.feature
+├── parte-6-b6-powerbi/         # tablero, DAX y datos exportados
+│   ├── powerbi/
+│   └── features/tablero-ventas.feature
+└── parte-7-parte-a-teoria/     # respuestas teóricas, al final
+    ├── respuestas.md
+    └── features/componente-teorico.feature
 ```
+
+**Organización por partes.** El código, las pruebas y las respuestas de cada
+sección viven en su carpeta `parte-N`. La raíz queda reservada para OpenSpec,
+configuración, documentación, datos y salidas compartidas. El PDF pedía
+`etl/`, `tests/`, `sql/`, `revision/`, `infra/` y `powerbi/` directamente en la
+raíz; por decisión de legibilidad (AP-09) esas carpetas se conservan **dentro**
+de su parte. El movimiento no cambia el comportamiento del pipeline.
 
 Los archivos de `datos/` son copia byte a byte del kit entregado
 (`md5` verificado). No se editan a mano: todas las correcciones quedan en el
@@ -121,28 +140,55 @@ especificaciones antes de escribir código. La instalación global es:
 npm install -g @fission-ai/openspec@latest   # requiere Node.js 22.12+
 ```
 
-El cambio `implementar-solucion-prueba-tecnica` contiene el análisis completo en
-`openspec/changes/implementar-solucion-prueba-tecnica/`:
+El plan está dividido en un cambio por parte:
 
-- `proposal.md`: por qué y qué cambia, con las 7 capacidades del sistema.
-- `specs/`: requisitos y escenarios de ingesta, almacén, reporte, envío,
-  consultas, operación y tablero.
-- `design.md`: decisiones técnicas (SQLite, zona horaria, SCD2, idempotencia,
-  dinero exacto, Docker y Power BI).
-- `tasks.md`: 45 tareas verificables agrupadas por parte de la prueba.
+- `b1-analisis-requerimiento`: análisis, preguntas, supuestos y arquitectura.
+- `b2-pipeline-ventas`: pipeline con las capacidades de ingesta, almacén y
+  reporte.
+- `b3-consultas-sql`: consultas y optimización.
+- `b4-revision-envio`: revisión y corrección del envío.
+- `refactor-organizacion-por-partes`: organización del repositorio y Gherkin.
+
+B5, B6 y la Parte A se agregan como cambios independientes; la Parte A queda al
+final, como se acordó. Cada cambio tiene `proposal.md`, `specs/`, `design.md`,
+`tasks.md` y, cuando aplica, `aprobacion.md` con la justificación del usuario.
+
+> El cambio `implementar-solucion-prueba-tecnica` es el plan paraguas original;
+> queda temporalmente hasta crear B5 y B6 y se retira con la aprobación AP-08.
 
 Comandos útiles:
 
 ```bash
-make spec              # lista los cambios activos
-make spec-validate     # valida el cambio en modo estricto
-openspec status --change implementar-solucion-prueba-tecnica
-openspec show implementar-solucion-prueba-tecnica
+make spec                        # lista los cambios activos
+make spec-validate               # valida todos los cambios en modo estricto
+openspec status --change b2-pipeline-ventas
+openspec show b2-pipeline-ventas
 ```
 
 Las skills de OpenSpec quedaron instaladas en `.agents/skills/` para que
 DeepSeek Harness pueda proponer, aplicar y archivar cambios con
 `/openspec-propose`, `/openspec-apply-change` y `/openspec-archive-change`.
+
+### 4.2 Historias de usuario en Gherkin
+
+Cada parte incluye una carpeta `features/` con sus historias en formato
+Gherkin (palabras clave en inglés y texto en español):
+
+```gherkin
+Feature: Reporte diario de ventas
+  Como Gerente Comercial
+  Quiero recibir el reporte del día anterior por zona y producto
+  Para tomar decisiones sin esperar el trabajo manual
+
+  Scenario: Reporte del 27 de octubre
+    Given la fecha de corte 2026-10-27
+    When se genera el reporte
+    Then existe reporte_ventas_20261027.xlsx con Resumen, Comparativo y Calidad
+```
+
+Los escenarios Gherkin son la vista de negocio de los requisitos de OpenSpec y
+deben mantenerse alineados; el agente los usa para entender el alcance antes de
+implementar. La regla quedó consignada en `openspec/config.yaml`.
 
 ---
 
@@ -239,6 +285,7 @@ Diagramas: [docs/arquitectura.mmd](docs/arquitectura.mmd) y
 
 - [x] Estructura del repositorio, datos y utilidades base
 - [x] Análisis del requerimiento B1 y arquitectura (borrador)
+- [x] Refactor por partes (B1 a B6 + Parte A al final) e historias Gherkin [AP-09](openspec/aprobaciones.md)
 - [ ] Pipeline B2: limpieza, modelo, carga idempotente, delta y reporte
 - [ ] Pruebas de limpieza e incremental (mínimo 3, objetivo > 20)
 - [ ] B3: consultas SQL y resultados

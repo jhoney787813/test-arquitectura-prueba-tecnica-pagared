@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import date, datetime
 
 import pytest
+
 from etl.fechas import fecha_negocio, parsear_fecha, resolver_fecha_corte
 
 
