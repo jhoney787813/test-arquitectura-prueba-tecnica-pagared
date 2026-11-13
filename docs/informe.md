@@ -191,5 +191,44 @@ _Pendiente: medidas DAX, capturas y justificación._
 
 ## 8. Uso de IA
 
-_Pendiente: herramientas, 3–5 prompts relevantes y al menos 2 correcciones o
-respuestas descartadas, con el motivo._
+**Herramientas:** DeepSeek Harness (modelo `deepseek-flash`), OpenSpec 2.0,
+GitHub Actions, `pytest` y `ruff`. El registro completo de la interacción, con
+los prompts textuales y las evidencias, está en
+[USO_IA_Y_PROMPTS.md](USO_IA_Y_PROMPTS.md).
+
+### 8.1 Prompts relevantes
+
+| # | Prompt (resumen) | Resultado verificable |
+| :---: | :--- | :--- |
+| 1 | “Creemos el proyecto que contendrá el repositorio de la solución” | Repositorio, perfilado de datos, 48 pruebas y análisis B1 |
+| 2 | “Instala y configura OpenSpec según los requerimientos del PDF” | OpenSpec 2.0, skills DSH y plan con 7 capacidades |
+| 3 | “Una feat por requerimiento; la Parte A al final” | Cambios B1-B4 separados y orden de trabajo explícito |
+| 4 | “Pídeme autorización y registra mi justificación en OpenSpec” | Matriz de aprobaciones y AP-09 documentada |
+| 5 | “Refactoriza por partes, raíz limpia y reglas Gherkin” | 7 carpetas `parte-*`, 9 `.feature` y 58 pruebas |
+
+### 8.2 Correcciones o descartes de respuestas de la IA
+
+1. **Plan monolítico descartado.** La IA propuso un único cambio con las 7
+   capacidades y 45 tareas; se dividió en feats por parte para aprobar y
+   sustentar cada etapa. Motivo: control del paso a paso y menor acoplamiento.
+2. **Código en la raíz descartado.** Ante el conflicto con la estructura del
+   PDF, la IA recomendó dejar el código en la raíz y usar `partes/` solo como
+   índice; el usuario pidió empaquetarlo dentro de cada parte. Motivo:
+   legibilidad y arquitectura limpia. Quedó en AP-09 y en
+   [JUSTIFICACION_ESTRUCTURA.md](JUSTIFICACION_ESTRUCTURA.md).
+3. **Gherkin faltante.** Los specs tenían requisitos y escenarios, pero no
+   historias `.feature`; se agregaron 9 archivos, una regla en la configuración
+   y una prueba de validación. Motivo: comprensión del agente y del evaluador.
+4. **Ritmo sin autorización.** La IA venía ejecutando cambios de forma autónoma;
+   el usuario exigió autorización previa y trazabilidad. Motivo: control humano
+   y auditoría de decisiones.
+
+### 8.3 Conclusión
+
+La IA fue útil porque el contexto se entregó de forma explícita (PDF, CSV,
+repositorio y validaciones) y porque cada instrucción definió un entregable
+verificable. El juicio humano corrigió las decisiones que la IA optimizaba para
+un criterio distinto (cumplir la letra del PDF) y las reemplazó por las que el
+candidato podía sustentar. El resultado no es “código generado por IA”, sino un
+repositorio con especificaciones, pruebas, CI, aprobaciones y decisiones
+rastreables.

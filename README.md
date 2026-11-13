@@ -100,7 +100,9 @@ de su parte. El movimiento no cambia el comportamiento del pipeline.
 
 La justificación completa de la estructura, el contenido de cada carpeta y su
 correspondencia con la distribución pedida está en
-[docs/JUSTIFICACION_ESTRUCTURA.md](docs/JUSTIFICACION_ESTRUCTURA.md).
+[docs/JUSTIFICACION_ESTRUCTURA.md](docs/JUSTIFICACION_ESTRUCTURA.md). El
+registro de uso de IA, contexto y prompts está en
+[docs/USO_IA_Y_PROMPTS.md](docs/USO_IA_Y_PROMPTS.md).
 
 Los archivos de `datos/` son copia byte a byte del kit entregado
 (`md5` verificado). No se editan a mano: todas las correcciones quedan en el
