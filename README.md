@@ -22,6 +22,21 @@ y operarlo de forma confiable (idempotente, observable y con alertas).
 
 ---
 
+## Resultado funcional
+
+[![Tablero B6 con el 27/10](parte-6-b6-powerbi/powerbi/capturas/tablero_20261027.png)](https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/)
+
+El entregable se centra en el código que funciona, no solo en documentación:
+
+| Resultado | Enlace |
+| :--- | :--- |
+| Tablero B6 en vivo (filtros, KPIs y variación) | [https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/](https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/) |
+| Informe consolidado | [INFORME_Jhon_E.pdf](INFORME_Jhon_E.pdf) |
+| Repositorio | [github.com/jhoney787813/test-arquitectura-prueba-tecnica-pagared](https://github.com/jhoney787813/test-arquitectura-prueba-tecnica-pagared.git) |
+| Demo ejecutable | `make podman-demo` (65 pruebas, ETL, SQL, BI y envío B4) |
+
+---
+
 ## 0. OpenSpec: el framework de IA con el que se construyó la solución
 
 Esta prueba no se resolvió con una sucesión de prompts sin contrato. Se usó

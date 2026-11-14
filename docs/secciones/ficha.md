@@ -8,6 +8,7 @@
 | Fecha de corte | 27 de octubre de 2026 |
 | Fecha de entrega | 14 de noviembre de 2026 |
 | Repositorio | [github.com/jhoney787813/test-arquitectura-prueba-tecnica-pagared](https://github.com/jhoney787813/test-arquitectura-prueba-tecnica-pagared.git) |
+| Tablero en vivo | [https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/](https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/) |
 | Stack | Python 3.11, pandas, openpyxl, SQLite, pytest, ruff, Podman |
 | Entregable | Pipeline ETL, modelo dimensional, SQL, revisión B4, operación B5 y diseño/prototipo B6 |
 

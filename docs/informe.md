@@ -190,6 +190,8 @@ consolidado.
 
 ## 7. Power BI (B6)
 
+**Tablero publicado:** [https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/](https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/)
+
 **Limitación:** Power BI Desktop solo funciona en Windows; el desarrollo se hizo
 en macOS. Por eso no se generó `tablero_ventas.pbix` ni capturas reales de
 Power BI Desktop. La prueba permite entregar el diseño, las medidas DAX y los

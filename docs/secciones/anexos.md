@@ -10,6 +10,9 @@ cd test-arquitectura-prueba-tecnica-pagared
 La rama `main` contiene el historial completo. El repositorio es privado y se
 comparte con el evaluador.
 
+- **Tablero publicado:** [https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/](https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/)
+- **Informe PDF:** [https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/INFORME_Jhon_E.pdf](https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/INFORME_Jhon_E.pdf)
+
 ## A.2 Organización
 
 | Parte | Carpeta | Contenido |

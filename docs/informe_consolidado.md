@@ -77,6 +77,7 @@ cuando la construcción se encuentra con la realidad.
 | Fecha de corte | 27 de octubre de 2026 |
 | Fecha de entrega | 14 de noviembre de 2026 |
 | Repositorio | [github.com/jhoney787813/test-arquitectura-prueba-tecnica-pagared](https://github.com/jhoney787813/test-arquitectura-prueba-tecnica-pagared.git) |
+| Tablero en vivo | [https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/](https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/) |
 | Stack | Python 3.11, pandas, openpyxl, SQLite, pytest, ruff, Podman |
 | Entregable | Pipeline ETL, modelo dimensional, SQL, revisión B4, operación B5 y diseño/prototipo B6 |
 
@@ -751,6 +752,8 @@ En todas se aplica mínimo privilegio: un usuario de base solo con `SELECT` e
 
 # 7. Power BI (B6)
 
+**Tablero publicado:** [https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/](https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/)
+
 **Limitación:** Power BI Desktop solo funciona en Windows; el desarrollo se hizo
 en macOS. Por eso no se generó `tablero_ventas.pbix` ni capturas reales de
 Power BI Desktop. La prueba permite entregar el diseño, las medidas DAX y los
@@ -881,6 +884,9 @@ cd test-arquitectura-prueba-tecnica-pagared
 
 La rama `main` contiene el historial completo. El repositorio es privado y se
 comparte con el evaluador.
+
+- **Tablero publicado:** [https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/](https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/)
+- **Informe PDF:** [https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/INFORME_Jhon_E.pdf](https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/INFORME_Jhon_E.pdf)
 
 ## A.2 Organización
 
