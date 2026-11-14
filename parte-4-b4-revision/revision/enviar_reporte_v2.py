@@ -121,6 +121,7 @@ def enviar(
     usuario: str | None,
     password_env: str,
     timeout: int,
+    usar_tls: bool,
 ) -> int:
     mensaje = construir_mensaje(reporte, destinatarios, asunto, remitente)
 
@@ -136,7 +137,8 @@ def enviar(
     password = os.getenv(password_env, "")
     contexto = ssl.create_default_context()
     with smtplib.SMTP(smtp_host, smtp_port, timeout=timeout) as servidor:
-        servidor.starttls(context=contexto)
+        if usar_tls:
+            servidor.starttls(context=contexto)
         if usuario:
             servidor.login(usuario, password)
         servidor.send_message(mensaje)
@@ -161,6 +163,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--usuario", default=None)
     parser.add_argument("--password-env", default="PAGARED_SMTP_PASSWORD")
     parser.add_argument("--timeout", type=int, default=30)
+    parser.add_argument(
+        "--sin-tls",
+        action="store_true",
+        help="No iniciar STARTTLS (solo para un servidor SMTP local de prueba)",
+    )
     parser.add_argument("--forzar", action="store_true", help="Reenviar aunque la clave exista")
     args = parser.parse_args(argv)
 
@@ -200,6 +207,7 @@ def main(argv: list[str] | None = None) -> int:
             usuario=args.usuario,
             password_env=args.password_env,
             timeout=args.timeout,
+            usar_tls=not args.sin_tls,
         )
     except Exception as exc:  # noqa: BLE001 - el fallo debe quedar registrado
         _registrar(ledger, clave, "FALLIDO", args.modo, str(exc))

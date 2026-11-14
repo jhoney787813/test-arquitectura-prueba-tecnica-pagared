@@ -7,12 +7,14 @@
 
 ## 1. Flujo ejecutado
 
+0. Ejecución de 65 pruebas y `ruff` dentro del contenedor.
 1. Carga base de `datos/transacciones.csv` para la fecha de corte `2026-10-27`.
 2. Carga incremental de `datos/transacciones_delta_20261028.csv` sobre la misma base.
 3. Generación de los reportes antes y después del delta.
 4. Ejecución de las consultas B3.
 5. Exportación del modelo a CSV para Power BI.
-6. Envío B4 en modo `.eml`, ejecutado dos veces para probar la idempotencia.
+6. Envío B4 por SMTP contra un servidor local de prueba, ejecutado dos veces
+   para comprobar la idempotencia.
 
 ## 2. Resultados del pipeline
 
@@ -47,23 +49,25 @@ El resultado completo está en `salida/consultas_20261027.txt`.
 - `salida/reporte_ventas_20261027.xlsx` (copia final después del delta)
 - `salida/consultas_20261027.txt`
 - `salida/powerbi/*.csv` (hecho y dimensiones)
-- `salida/envio.eml` y `salida/envios.json` (B4)
+- `salida/smtp.log` y `salida/envios_smtp.json` (B4)
 
 ## 5. Envío idempotente B4
 
-La primera ejecución generó el borrador y registró la clave de idempotencia.
-La segunda ejecución respondió:
+La primera ejecución envió el correo a un `DebuggingServer` local y registró
+la clave de idempotencia. La segunda respondió:
 
 ```text
 Ya registrado con la clave ...; no se envía de nuevo.
 ```
 
-Así se evita el correo duplicado del script original, sin ocultar fallas.
+El servidor local recibió el asunto del reporte. Así se demuestra el envío real
+sin depender de un SMTP corporativo y se evita el correo duplicado del script
+original, sin ocultar fallas.
 
 ## 6. Pruebas
 
-- `pytest`: 65 pruebas en verde.
-- `ruff check .`: sin hallazgos.
+- `pytest`: 65 pruebas en verde (también dentro del contenedor).
+- `ruff check .`: sin hallazgos (también dentro del contenedor).
 - `openspec validate --changes --strict`: 6/6 cambios válidos.
 - `make podman-test`: 65 pruebas dentro del contenedor.
 
@@ -72,5 +76,5 @@ Así se evita el correo duplicado del script original, sin ocultar fallas.
 - El demo usa datos de prueba del kit; no toca producción.
 - Power BI Desktop no está disponible en macOS: se exportan los CSV y se
   entrega el diseño/DAX; el `.pbix` queda pendiente de un equipo Windows.
-- El envío real por SMTP no se ejecuta en el demo; se prueba el modo `.eml` y
-  el manejo de fallos.
+- El SMTP del demo es un servidor local de prueba; no se envía a un servidor
+  corporativo real. El modo `.eml` sigue disponible para entornos sin SMTP.

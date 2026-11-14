@@ -218,13 +218,15 @@ make podman-test   # 65 pruebas dentro del contenedor
 
 El demo:
 
-1. Borra la base y carga `transacciones.csv`.
-2. Aplica `transacciones_delta_20261028.csv` sobre la misma base.
-3. Genera reportes antes/después del delta, ejecuta las consultas B3,
-   exporta el modelo a CSV y prueba el envío idempotente de B4.
-4. Imprime los totales y deja los archivos en `salida/antes/`,
-   `salida/despues/`, `salida/consultas_20261027.txt`, `salida/powerbi/` y
-   `salida/envio.eml`.
+1. Ejecuta las 65 pruebas y `ruff` dentro del contenedor.
+2. Borra la base y carga `transacciones.csv`.
+3. Aplica `transacciones_delta_20261028.csv` sobre la misma base.
+4. Genera reportes antes/después, ejecuta las consultas B3, exporta el modelo
+   a CSV y envía el reporte por un SMTP local de prueba, comprobando que el
+   segundo intento no duplica el correo.
+5. Imprime los totales y deja los archivos en `salida/antes/`,
+   `salida/despues/`, `salida/consultas_20261027.txt`, `salida/powerbi/`,
+   `salida/smtp.log` y `salida/envios_smtp.json`.
 
 Resultados del demo (fecha de corte 2026-10-27):
 

@@ -51,3 +51,5 @@ salida/envio.eml
 salida/envios.json
 salida/demo_*.log
 parte-4-b4-revision/envios.json
+salida/smtp.log
+salida/envios_smtp.json
