@@ -10,11 +10,11 @@ Solución al caso de PagaRed S.A.S.: automatizar el reporte diario de ventas que
 hoy prepara Paola en Excel durante tres horas, dejarlo disponible para Power BI
 y operarlo de forma confiable (idempotente, observable y con alertas).
 
-> **Estado:** repositorio en construcción por fases. La estructura, las reglas
-> de negocio, el perfilado de datos y el análisis del requerimiento (B1) ya
-> están documentados; el pipeline (B2), las consultas (B3), la revisión de
-> código (B4), la operación (B5) y el tablero (B6) se incorporan en los
-> siguientes commits.
+> 📄 **Informe consolidado:** [INFORME_Jhon_E.pdf](INFORME_Jhon_E.pdf) — 21 páginas, con la conclusión personal al inicio, las partes A y B1-B6, evidencias de ejecución y el repositorio para clonar.
+>
+> 🔗 **Repositorio:** [github.com/jhoney787813/test-arquitectura-prueba-tecnica-pagared](https://github.com/jhoney787813/test-arquitectura-prueba-tecnica-pagared.git)
+>
+> **Estado:** solución implementada y verificada. El pipeline B2, las consultas B3, la revisión B4, la operación B5, el prototipo B6, las 65 pruebas y el demo en Podman están en el repositorio. El `.pbix` de Power BI queda pendiente de un equipo Windows, como se explica en el informe.
 
 ---
 
