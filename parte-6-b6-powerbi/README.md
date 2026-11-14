@@ -6,9 +6,18 @@ medidas DAX explícitas.
 
 ## Contenido
 
-- `powerbi/`: diseño, medidas DAX, exportación de datos y capturas si hay
-  acceso a Windows.
+- `powerbi/`: diseño, medidas DAX y capturas si hay acceso a Windows.
+- `scripts/exportar_datos.py`: exporta el hecho y las dimensiones a CSV para
+  conectarlos desde Power BI en macOS.
 - `features/tablero-ventas.feature`: historia Gherkin del tablero.
+
+## Exportación de datos
+
+```bash
+make bi-export   # CSV del hecho y las dimensiones en powerbi/datos/
+```
+
+El demo de Podman también los deja en `salida/powerbi/`.
 
 ## Limitación
 

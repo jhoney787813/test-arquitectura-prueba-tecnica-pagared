@@ -22,13 +22,13 @@ y operarlo de forma confiable (idempotente, observable y con alertas).
 
 | Parte | Entregable | Estado |
 | :---: | :--- | :--- |
-| A | Respuestas teóricas (10 preguntas) → [parte-7](parte-7-parte-a-teoria/) | Pendiente (última) |
-| B1 | Análisis del requerimiento y arquitectura → [parte-1](parte-1-b1-analisis/) | Borrador completo |
-| B2 | Pipeline ETL, modelo dimensional, reporte y pruebas → [parte-2](parte-2-b2-pipeline/) | En curso (utilidades de limpieza y fechas listas) |
-| B3 | Consultas SQL → [parte-3](parte-3-b3-sql/) | Pendiente |
-| B4 | Revisión y envío corregido → [parte-4](parte-4-b4-revision/) | Pendiente |
-| B5 | Operación, incidente y despliegue → [parte-5](parte-5-b5-operacion/) | Pendiente |
-| B6 | Tablero de Power BI → [parte-6](parte-6-b6-powerbi/) | Pendiente (diseño DAX) |
+| A | Respuestas teóricas (10 preguntas) → [parte-7](parte-7-parte-a-teoria/) | Respondidas (10/10) |
+| B1 | Análisis del requerimiento y arquitectura → [parte-1](parte-1-b1-analisis/) | Completo |
+| B2 | Pipeline ETL, modelo dimensional, reporte y pruebas → [parte-2](parte-2-b2-pipeline/) | Implementado y probado |
+| B3 | Consultas SQL → [parte-3](parte-3-b3-sql/) | Implementado |
+| B4 | Revisión y envío corregido → [parte-4](parte-4-b4-revision/) | Implementado (v2 idempotente) |
+| B5 | Operación, incidente y despliegue → [parte-5](parte-5-b5-operacion/) | Contenedor y demo; falta análisis del incidente |
+| B6 | Tablero de Power BI → [parte-6](parte-6-b6-powerbi/) | Datos exportados; `.pbix` pendiente (macOS) |
 | — | Informe consolidado PDF | Pendiente de compilar |
 
 ---
@@ -196,6 +196,54 @@ Los escenarios Gherkin son la vista de negocio de los requisitos de OpenSpec y
 deben mantenerse alineados; el agente los usa para entender el alcance antes de
 implementar. La regla quedó consignada en `openspec/config.yaml`.
 
+### 4.3 Ejecución local y con Podman
+
+**Local:**
+
+```bash
+make test          # 65 pruebas
+make etl           # pipeline para 2026-10-27 (base)
+make etl-delta     # pipeline + delta del 28/10
+make consultas     # B3 sobre db/pagared.db
+make bi-export     # CSV para Power BI en parte-6.../powerbi/datos
+```
+
+**Podman:**
+
+```bash
+make podman-build  # construye pagared-etl:local
+make podman-demo   # ejecuta el flujo completo y deja los artefactos en salida/
+make podman-test   # 65 pruebas dentro del contenedor
+```
+
+El demo:
+
+1. Borra la base y carga `transacciones.csv`.
+2. Aplica `transacciones_delta_20261028.csv` sobre la misma base.
+3. Genera reportes antes/después del delta, ejecuta las consultas B3,
+   exporta el modelo a CSV y prueba el envío idempotente de B4.
+4. Imprime los totales y deja los archivos en `salida/antes/`,
+   `salida/despues/`, `salida/consultas_20261027.txt`, `salida/powerbi/` y
+   `salida/envio.eml`.
+
+Resultados del demo (fecha de corte 2026-10-27):
+
+| Momento | Ventas | Transacciones |
+| :--- | ---: | ---: |
+| Antes del delta | $954.497.200 | 2.440 |
+| Después del delta | $916.270.700 | 2.452 |
+
+El delta insertó 2.005 transacciones, actualizó 52 e ignoró 53; la base base
+descartó 314 filas por calidad y el delta 1 versión obsoleta.
+
+La imagen define un usuario `etl` no root. Para que el demo escriba en los
+volúmenes del host en macOS se ejecuta con `--userns=keep-id` y el UID del
+usuario; en un servidor Linux se puede usar el usuario `etl` con volúmenes
+propios. El detalle del flujo está en
+[parte-5-b5-operacion/infra/](parte-5-b5-operacion/infra/). Los resultados
+numéricos del demo están en
+[docs/RESULTADOS_EJECUCION.md](docs/RESULTADOS_EJECUCION.md).
+
 ---
 
 ## 5. Perfilado de los datos entregados
@@ -292,11 +340,13 @@ Diagramas: [docs/arquitectura.mmd](docs/arquitectura.mmd) y
 - [x] Estructura del repositorio, datos y utilidades base
 - [x] Análisis del requerimiento B1 y arquitectura (borrador)
 - [x] Refactor por partes (B1 a B6 + Parte A al final) e historias Gherkin [AP-09](openspec/aprobaciones.md)
-- [ ] Pipeline B2: limpieza, modelo, carga idempotente, delta y reporte
-- [ ] Pruebas de limpieza e incremental (mínimo 3, objetivo > 20)
-- [ ] B3: consultas SQL y resultados
-- [ ] B4: revisión de `enviar_reporte.py` y versión corregida
-- [ ] B5: incidente, Dockerfile, despliegue y conectividad Azure
+- [x] Pipeline B2: limpieza, modelo, carga idempotente, delta y reporte
+- [x] Pruebas de limpieza e incremental (65 pruebas)
+- [x] B3: consultas SQL y resultados
+- [x] B4: revisión de `enviar_reporte.py` y versión corregida
+- [x] B5: contenedor Podman, demo y flujo de ejecución
+- [ ] B5: análisis del incidente, despliegue y conectividad Azure en el informe
+- [x] B6: exportación de datos para Power BI
 - [ ] B6: medidas DAX, diseño del tablero y capturas
 - [ ] Informe consolidado en PDF y sustentación
 

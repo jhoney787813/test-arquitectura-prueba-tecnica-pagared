@@ -6,9 +6,10 @@ Excel más el borrador de correo.
 
 ## Contenido
 
-- `etl/`: paquete Python (`config`, `fechas`, `limpieza` y las capas que se
-  agregarán en la implementación).
-- `tests/`: pruebas con pytest de contratos, fechas, limpieza e incrementales.
+- `etl/`: paquete Python con lectura, limpieza, modelo, carga, reporte, CLI y
+  consultas.
+- `tests/`: pruebas con pytest de contratos, fechas, limpieza, idempotencia,
+  delta y Gherkin.
 - `scripts/perfil_datos.py`: perfilado reproducible de los CSV.
 - `features/`: historias Gherkin de ingesta, almacén y reporte.
 
@@ -17,9 +18,12 @@ Excel más el borrador de correo.
 Desde la raíz del repositorio:
 
 ```bash
-make test                 # pytest
+make test                 # pytest (65 pruebas)
 make lint                 # ruff
-make perfil               # perfilado de datos
+make etl                  # pipeline base para 2026-10-27
+make etl-delta            # pipeline + delta del 28/10
+make consultas            # consultas B3 sobre la base
+make bi-export            # CSV para Power BI
 ```
 
 El paquete se instala en modo editable con `make setup` o

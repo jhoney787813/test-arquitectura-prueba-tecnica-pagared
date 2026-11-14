@@ -41,3 +41,13 @@ logs/*.log.*
 .DS_Store
 .idea/
 .vscode/
+
+# Artefactos del demo de Podman (se versiona solo el reporte final)
+salida/antes/
+salida/despues/
+salida/powerbi/
+salida/consultas_*.txt
+salida/envio.eml
+salida/envios.json
+salida/demo_*.log
+parte-4-b4-revision/envios.json

@@ -5,9 +5,10 @@ una versión corregida con envío idempotente, fallo visible y auditoría.
 
 ## Contenido
 
-- `revision/enviar_reporte_v2.py`: versión corregida (se agrega con la
-  implementación).
-- `tests/`: pruebas con SMTP falso (se agregan con la implementación).
+- `revision/enviar_reporte_v2.py`: versión corregida con idempotencia,
+  validación, ledger y códigos de salida.
+- `tests/`: pruebas de modo `.eml`, idempotencia, reporte inexistente y fallo
+  de SMTP.
 - `features/envio-reporte.feature`: historia Gherkin del envío.
 
 ## Entregable

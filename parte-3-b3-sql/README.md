@@ -7,7 +7,8 @@ de producción.
 ## Contenido
 
 - `sql/consultas.sql`: una consulta comentada por pregunta.
-- `tests/`: pruebas de ejecución y resultados (se agregan con la implementación).
+- `etl.consultas` (en la parte 2): ejecuta las consultas y guarda el resultado.
+- `tests/`: cobertura pendiente de automatizar.
 - `features/consultas-ventas.feature`: historia Gherkin de las consultas.
 
 ## Entregable

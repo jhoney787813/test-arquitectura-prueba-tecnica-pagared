@@ -1,0 +1,13 @@
+# Alternativa a `make podman-demo`. En macOS, usar el Makefile para
+# mapear el UID del host con --userns=keep-id.
+services:
+  etl:
+    build:
+      context: ../..
+      dockerfile: parte-5-b5-operacion/infra/Containerfile
+    image: pagared-etl:local
+    volumes:
+      - ../../datos:/app/datos:ro
+      - ../../db:/app/db
+      - ../../salida:/app/salida
+    command: ["demo"]

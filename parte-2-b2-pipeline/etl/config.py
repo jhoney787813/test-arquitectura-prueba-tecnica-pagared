@@ -11,7 +11,7 @@ import os
 from datetime import date
 from pathlib import Path
 
-RAIZ_REPOSITORIO = Path(__file__).resolve().parents[2]
+RAIZ_REPOSITORIO = Path(os.getenv("PAGARED_ROOT") or Path(__file__).resolve().parents[2])
 
 
 def _ruta_entorno(variable: str, defecto: Path) -> Path:

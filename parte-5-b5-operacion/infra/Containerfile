@@ -1,0 +1,22 @@
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PAGARED_ROOT=/app
+
+WORKDIR /app
+
+COPY . /app
+
+RUN pip install --no-cache-dir -e ".[dev]" \
+    && useradd --create-home --uid 1000 etl \
+    && mkdir -p /app/db /app/salida /app/logs \
+    && chown -R etl:etl /app \
+    && chmod -R a+rX /app
+
+USER etl
+
+ENTRYPOINT ["/bin/sh", "/app/parte-5-b5-operacion/infra/entrypoint.sh"]
+CMD ["demo"]

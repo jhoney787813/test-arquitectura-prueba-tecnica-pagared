@@ -21,6 +21,10 @@ dependencies = [
     "openpyxl>=3.1",
 ]
 
+[project.scripts]
+pagared-etl = "etl.cli:main"
+pagared-consultas = "etl.consultas:main"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0",
@@ -37,7 +41,7 @@ include = ["etl*"]
 
 [tool.pytest.ini_options]
 minversion = "8.0"
-testpaths = ["parte-2-b2-pipeline/tests"]
+testpaths = ["parte-2-b2-pipeline/tests", "parte-4-b4-revision/tests"]
 addopts = "-ra"
 
 [tool.ruff]
@@ -51,3 +55,4 @@ ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]
 "parte-2-b2-pipeline/tests/*" = ["S101"]
+"parte-4-b4-revision/tests/*" = ["S101"]

@@ -5,10 +5,12 @@ VENV ?= .venv
 BIN := $(VENV)/bin
 FECHA ?= 2026-10-27
 DELTA ?= datos/transacciones_delta_20261028.csv
+PODMAN ?= podman
+IMAGEN ?= pagared-etl:local
 
 .DEFAULT_GOAL := ayuda
 
-.PHONY: ayuda setup test lint fmt perfil spec spec-validate limpiar
+.PHONY: ayuda setup test lint fmt perfil etl etl-delta consultas bi-export podman-build podman-demo podman-test spec spec-validate limpiar
 
 ayuda:
 	@echo "Objetivos disponibles:"
@@ -17,6 +19,13 @@ ayuda:
 	@echo "  make lint        Ejecuta ruff"
 	@echo "  make fmt         Formatea el código con ruff"
 	@echo "  make perfil      Perfila los CSV de entrada"
+	@echo "  make etl         Ejecuta el pipeline para la fecha de corte"
+	@echo "  make etl-delta   Ejecuta el pipeline y aplica el delta"
+	@echo "  make consultas   Ejecuta las consultas B3"
+	@echo "  make bi-export   Exporta el modelo a CSV para Power BI"
+	@echo "  make podman-build  Construye la imagen con Podman"
+	@echo "  make podman-demo   Ejecuta el demo completo en un contenedor"
+	@echo "  make podman-test   Ejecuta pytest dentro del contenedor"
 	@echo "  make spec        Lista los cambios de OpenSpec"
 	@echo "  make spec-validate  Valida el cambio OpenSpec en modo estricto"
 	@echo "  make limpiar     Borra cachés locales"
@@ -37,6 +46,33 @@ fmt:
 
 perfil:
 	$(BIN)/python parte-2-b2-pipeline/scripts/perfil_datos.py --detalle
+
+etl:
+	$(BIN)/python -m etl --fecha-corte $(FECHA)
+
+etl-delta:
+	$(BIN)/python -m etl --fecha-corte $(FECHA) --delta $(DELTA)
+
+consultas:
+	$(BIN)/python -m etl.consultas --fecha $(FECHA)
+
+bi-export:
+	$(BIN)/python parte-6-b6-powerbi/scripts/exportar_datos.py
+
+podman-build:
+	$(PODMAN) build -t $(IMAGEN) -f parte-5-b5-operacion/infra/Containerfile .
+
+podman-demo: podman-build
+	$(PODMAN) run --rm \
+		--userns=keep-id --user "$$(id -u):$$(id -g)" \
+		-v "$(CURDIR)/datos:/app/datos:ro" \
+		-v "$(CURDIR)/db:/app/db" \
+		-v "$(CURDIR)/salida:/app/salida" \
+		-v "$(CURDIR)/logs:/app/logs" \
+		$(IMAGEN) demo
+
+podman-test: podman-build
+	$(PODMAN) run --rm $(IMAGEN) test
 
 spec:
 	openspec list
