@@ -1,7 +1,7 @@
 # Parte A — Componente teórico
 
-> **En progreso:** A1 a A8 respondidas; A9 y A10 pendientes. Se procesa al
-> final, después de B1 a B6.
+> **En progreso:** A1 a A9 respondidas; A10 pendiente. Se procesa al final,
+> después de B1 a B6.
 
 Cada respuesta debe incluir su justificación y no superar 8 líneas, como pide
 la prueba. Esta sección alimenta la sección 1 del informe consolidado.
@@ -95,5 +95,14 @@ delta/CDC del core como fuente de cambios. Agregaría control de cargas y una
 reconciliación periódica contra el core para detectar cambios o borrados perdidos.
 
 ## A9. Modelado — historia de zonas
+
+**Respuesta:** El `UPDATE` al maestro sobrescribió la zona; como el hecho se une
+a la dimensión actual, las ventas de 2024 heredaron Sur y cambiaron los
+números. Lo diseñaría con `dim_punto` **SCD2** (`punto_sk`, `cod_punto`,
+`zona`, `valido_desde`, `valido_hasta`, `es_actual`): al cambiar la zona se
+cierra la versión anterior y se inserta la nueva, y el hecho guarda el
+`punto_sk` vigente a la fecha de la venta. Así 2024 sigue en Valle de Aburrá y
+2025 en Sur. Una columna “anterior/nuevo” o una descripción no resuelve el join
+histórico ni los cambios múltiples.
 
 ## A10. Criterio — automatizar un proceso manual
