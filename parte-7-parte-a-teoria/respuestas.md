@@ -1,6 +1,6 @@
 # Parte A — Componente teórico
 
-> **En progreso:** A1 a A5 respondidas; A6 a A10 pendientes. Se procesa al
+> **En progreso:** A1 a A6 respondidas; A7 a A10 pendientes. Se procesa al
 > final, después de B1 a B6.
 
 Cada respuesta debe incluir su justificación y no superar 8 líneas, como pide
@@ -63,6 +63,15 @@ tiene horario de verano, así que 11:00 UTC son siempre las 6:00 COT. No
 cambiaría la zona del servidor: afecta todos los jobs.
 
 ## A6. ETL — idempotencia y reintentos
+
+**Respuesta:** El reintento duplica porque el cargue no es idempotente. La
+tabla de hechos debe tener una clave natural (`id_transaccion`) con `UNIQUE`, y
+el cargue debe hacer `UPSERT` (o borrar/insertar la fecha dentro de una
+transacción) para que repetirlo deje el mismo resultado. Una columna de estado
+sirve para auditar y decidir si se reprocesa, pero no evita duplicados si
+quedaron filas parciales: el lote debe ser transaccional o usar staging + merge.
+En Jenkins, `disableConcurrentBuilds()` y un lock evitan dos ejecuciones; no
+mataría el proceso anterior a ciegas porque puede dejar escrituras a medias.
 
 ## A7. Seguridad y Git — secreto en el repositorio
 
