@@ -1,6 +1,6 @@
 # Parte A — Componente teórico
 
-> **En progreso:** A1 a A3 respondidas; A4 a A10 pendientes. Se procesa al
+> **En progreso:** A1 a A4 respondidas; A5 a A10 pendientes. Se procesa al
 > final, después de B1 a B6.
 
 Cada respuesta debe incluir su justificación y no superar 8 líneas, como pide
@@ -42,6 +42,15 @@ interpreta con el locale y los nulos se validan/normalizan antes de sumar.
 y APIs/JSON que serializan como float.
 
 ## A4. RPA — Selenium y esperas
+
+**Respuesta:** El `sleep(5)` espera tiempo, no al elemento: si el agente tarda
+más, hay login/error, iframes/overlays o cambian los locators, el clic lanza
+`NoSuchElementException`; también influyen headless, driver, red/VPN y sesión.
+Se robustece con `WebDriverWait` + `expected_conditions`, locators estables,
+reintentos con backoff, screenshot/logs y Chrome/driver fijados en contenedor.
+No usaría RPA si el banco ofrece API/SFTP/DB, exige MFA/captcha no automatizable
+o el volumen/frecuencia hacen el bot frágil; conviene integración o archivo
+contratado.
 
 ## A5. Jenkins — zona horaria del cron
 
