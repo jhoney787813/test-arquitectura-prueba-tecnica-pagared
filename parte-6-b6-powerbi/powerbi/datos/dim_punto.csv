@@ -1,0 +1,43 @@
+﻿punto_sk,cod_punto,nombre,zona,activo,valido_desde,valido_hasta,es_actual
+10100,00101,Punto Medellín Centro,Valle de Aburrá,S,2015-02-10,9999-12-31,1
+10200,00102,Punto Laureles,Valle de Aburrá,S,2015-06-01,9999-12-31,1
+10300,00103,Punto Belén,Valle de Aburrá,S,2016-01-20,9999-12-31,1
+10400,00104,Punto Itagüí Parque,Valle de Aburrá,S,2016-04-11,9999-12-31,1
+10500,00105,Punto Envigado Centro,Valle de Aburrá,S,2016-09-05,9999-12-31,1
+10600,00106,Punto Sabaneta,Valle de Aburrá,S,2017-03-14,9999-12-31,1
+10700,00107,Punto Bello Niquía,Valle de Aburrá,S,2017-07-22,9999-12-31,1
+10800,00108,Punto Robledo,Valle de Aburrá,S,2018-02-02,9999-12-31,1
+10900,00109,Punto Castilla,Valle de Aburrá,S,2018-05-30,9999-12-31,1
+11000,00110,Punto La Estrella,Valle de Aburrá,S,2018-10-10,9999-12-31,1
+11100,00111,Punto Copacabana,Valle de Aburrá,S,2019-01-15,9999-12-31,1
+11200,00112,Punto Caldas,Valle de Aburrá,S,2019-04-08,9999-12-31,1
+11300,00113,Punto El Poblado,Valle de Aburrá,S,2019-08-19,9999-12-31,1
+11400,00114,Punto Buenos Aires,Valle de Aburrá,S,2020-02-03,9999-12-31,1
+11500,00115,Punto Manrique,Valle de Aburrá,S,2020-11-23,9999-12-31,1
+11600,00116,Punto San Javier,Valle de Aburrá,S,2021-05-17,9999-12-31,1
+11700,00117,Punto Rionegro Llanogrande,Oriente,N,2017-01-09,2024-03-03,0
+11701,00117,Punto Envigado La Magnolia,Valle de Aburrá,S,2024-03-04,9999-12-31,1
+11800,00118,Punto Rionegro Centro,Oriente,S,2016-03-01,9999-12-31,1
+11900,00119,Punto Marinilla,Oriente,S,2017-05-12,9999-12-31,1
+12000,00120,Punto La Ceja,Oriente,S,2018-06-25,9999-12-31,1
+12100,00121,Punto El Carmen de Viboral,Oriente,S,2019-09-09,9999-12-31,1
+12200,00122,Punto Guarne,Oriente,S,2020-01-27,9999-12-31,1
+12300,00123,Punto El Santuario,Oriente,S,2021-02-15,9999-12-31,1
+12400,00124,Punto La Unión,Oriente,S,2022-07-04,9999-12-31,1
+12500,00125,Punto Andes,Suroeste,S,2017-10-02,9999-12-31,1
+12600,00126,Punto Jardín,Suroeste,S,2018-03-19,9999-12-31,1
+12700,00127,Punto Ciudad Bolívar,Suroeste,S,2019-06-03,9999-12-31,1
+12800,00128,Punto Jericó,Suroeste,S,2020-08-10,9999-12-31,1
+12900,00129,Punto Fredonia,Suroeste,S,2021-11-29,9999-12-31,1
+13000,00130,Punto Santa Rosa de Osos,Norte,S,2018-04-16,9999-12-31,1
+13100,00131,Punto Yarumal,Norte,S,2019-02-25,9999-12-31,1
+13200,00132,Punto Donmatías,Norte,S,2020-05-11,9999-12-31,1
+13300,00133,Punto Santa Fe de Antioquia,SIN ZONA,S,2025-12-01,9999-12-31,1
+13400,00134,Punto San Pedro de los Milagros,Norte,S,2021-03-08,9999-12-31,1
+13500,00135,Punto Entrerríos,Norte,S,2022-09-12,9999-12-31,1
+13600,00136,Punto Apartadó,Urabá,S,2026-10-27,9999-12-31,1
+13700,00137,Punto Turbo,Urabá,S,2026-10-27,9999-12-31,1
+13800,00138,Punto Valdivia,Norte,N,2019-07-01,9999-12-31,1
+13900,00139,Punto Carepa,Urabá,S,2026-10-27,9999-12-31,1
+14000,00140,Punto Chigorodó,Urabá,S,2026-10-27,9999-12-31,1
+19999,00199,Punto no catalogado 00199,NO CATALOGADO,N,1900-01-01,9999-12-31,1

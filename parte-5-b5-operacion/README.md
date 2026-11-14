@@ -22,7 +22,7 @@ make podman-test    # 65 pruebas dentro del contenedor
 ```
 
 El flujo del contenedor está en `infra/demo.sh` y los resultados numéricos en
-[docs/RESULTADOS_EJECUCION.md](../../docs/RESULTADOS_EJECUCION.md).
+[docs/RESULTADOS_EJECUCION.md](../docs/RESULTADOS_EJECUCION.md).
 
 ## Entregable
 

@@ -1,0 +1,61 @@
+// Medidas DAX del tablero de ventas (B6).
+// Modelo: fact_transacciones + dim_fecha, dim_punto (SCD2), dim_producto,
+// dim_canal y dim_estado. Marcar dim_fecha como tabla de fechas.
+
+Ventas =
+CALCULATE(
+    SUM(fact_transacciones[valor_cop]),
+    dim_estado[cuenta_como_venta] = 1
+)
+
+Transacciones =
+CALCULATE(
+    COUNTROWS(fact_transacciones),
+    dim_estado[cuenta_como_venta] = 1
+)
+
+TicketPromedio =
+DIVIDE([Ventas], [Transacciones])
+
+VentasDiaAnterior =
+CALCULATE(
+    [Ventas],
+    DATEADD(dim_fecha[fecha], -1, DAY)
+)
+
+TransaccionesDiaAnterior =
+CALCULATE(
+    [Transacciones],
+    DATEADD(dim_fecha[fecha], -1, DAY)
+)
+
+TicketDiaAnterior =
+DIVIDE([VentasDiaAnterior], [TransaccionesDiaAnterior])
+
+VariacionVentas =
+VAR Anterior = [VentasDiaAnterior]
+RETURN
+    IF(
+        ISBLANK(Anterior) || Anterior = 0,
+        BLANK(),
+        DIVIDE([Ventas] - Anterior, Anterior)
+    )
+
+VariacionTransacciones =
+VAR Anterior = [TransaccionesDiaAnterior]
+RETURN
+    IF(
+        ISBLANK(Anterior) || Anterior = 0,
+        BLANK(),
+        DIVIDE([Transacciones] - Anterior, Anterior)
+    )
+
+// RLS opcional: cada gerente ve solo su zona.
+// Tabla usuarios_zona(email, zona).
+// Rol "Zona":
+// dim_punto[zona] =
+// LOOKUPVALUE(
+//     usuarios_zona[zona],
+//     usuarios_zona[email],
+//     USERPRINCIPALNAME()
+// )

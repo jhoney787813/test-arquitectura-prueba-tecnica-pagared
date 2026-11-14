@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tablero de ventas — PagaRed</title>
+<style>
+  :root {
+    --azul: #123a63;
+    --azul-2: #1f5c94;
+    --fondo: #eef2f7;
+    --texto: #1c2a3a;
+    --suave: #65758b;
+    --linea: #dbe3ee;
+    --verde: #1b7f5a;
+    --rojo: #b23a48;
+    --blanco: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  .page { max-width: 1280px; margin: 0 auto; padding: 24px 28px 36px; }
+  header {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: flex-start;
+    background: linear-gradient(120deg, var(--azul), var(--azul-2));
+    color: var(--blanco);
+    padding: 26px 30px;
+    border-radius: 18px;
+    box-shadow: 0 12px 26px rgba(18, 58, 99, .22);
+  }
+  .eyebrow { margin: 0 0 6px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; opacity: .8; }
+  h1 { margin: 0; font-size: 30px; font-weight: 650; letter-spacing: -.02em; }
+  .sub { margin: 8px 0 0; font-size: 13px; opacity: .85; }
+  .badge {
+    border: 1px solid rgba(255,255,255,.35);
+    background: rgba(255,255,255,.12);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: end;
+    margin: 20px 0 16px;
+    padding: 16px 18px;
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    border-radius: 14px;
+  }
+  .filters label { display: grid; gap: 5px; font-size: 11px; color: var(--suave); text-transform: uppercase; letter-spacing: .06em; }
+  select {
+    appearance: none;
+    border: 1px solid var(--linea);
+    background: #f8fafc;
+    color: var(--texto);
+    border-radius: 9px;
+    padding: 9px 32px 9px 11px;
+    font: inherit;
+    font-size: 13px;
+    min-width: 160px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--suave) 50%), linear-gradient(135deg, var(--suave) 50%, transparent 50%);
+    background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+  }
+  .hint { margin-left: auto; font-size: 11px; color: var(--suave); }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .kpi {
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 12px rgba(18, 58, 99, .04);
+  }
+  .kpi span { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--suave); }
+  .kpi strong { display: block; margin: 8px 0 4px; font-size: 27px; letter-spacing: -.02em; }
+  .kpi small { color: var(--suave); font-size: 12px; }
+  .kpi .positivo { color: var(--verde); }
+  .kpi .negativo { color: var(--rojo); }
+  .grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 14px; margin-top: 14px; }
+  .card {
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 12px rgba(18, 58, 99, .04);
+  }
+  .card h2 { margin: 0 0 14px; font-size: 14px; color: var(--azul); }
+  .bar-row { display: grid; grid-template-columns: 135px 1fr 110px; gap: 10px; align-items: center; margin: 9px 0; font-size: 12px; }
+  .bar-row .label { color: var(--texto); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bar-row .track { height: 9px; background: #eef2f7; border-radius: 99px; overflow: hidden; }
+  .bar-row .fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #2b6fa8, #62a7d9); }
+  .bar-row .value { text-align: right; font-variant-numeric: tabular-nums; color: var(--suave); }
+  .table-card { margin-top: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { text-align: left; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--suave); border-bottom: 1px solid var(--linea); padding: 9px 8px; }
+  td { border-bottom: 1px solid #f0f3f8; padding: 9px 8px; font-variant-numeric: tabular-nums; }
+  td.num, th.num { text-align: right; }
+  .positivo { color: var(--verde); font-weight: 600; }
+  .negativo { color: var(--rojo); font-weight: 600; }
+  .neutro { color: var(--suave); }
+  footer { margin-top: 18px; color: var(--suave); font-size: 11px; display: flex; justify-content: space-between; gap: 20px; }
+  .empty { color: var(--suave); font-size: 12px; padding: 12px 0; }
+  @media (max-width: 900px) {
+    .kpis, .grid { grid-template-columns: 1fr; }
+    header { flex-direction: column; }
+    .hint { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div>
+      <p class="eyebrow">PagaRed · Inteligencia Empresarial</p>
+      <h1>Tablero de ventas</h1>
+      <p class="sub">Prototipo del diseño para Power BI · fuente: modelo dw_pagared</p>
+    </div>
+    <div class="badge">Prototipo funcional · .pbix pendiente (Windows)</div>
+  </header>
+
+  <section class="filters">
+    <label>Fecha<select id="fecha"></select></label>
+    <label>Zona<select id="zona"><option value="todas">Todas</option></select></label>
+    <label>Canal<select id="canal"><option value="todos">Todos</option></select></label>
+    <span class="hint">Ventas = APROBADA + REVERSADA · excluye punto 90001</span>
+  </section>
+
+  <section class="kpis">
+    <article class="kpi">
+      <span>Ventas del día</span>
+      <strong id="kpi-ventas">$0</strong>
+      <small id="kpi-variacion">vs. día anterior: —</small>
+    </article>
+    <article class="kpi">
+      <span>Transacciones</span>
+      <strong id="kpi-transacciones">0</strong>
+      <small id="kpi-transacciones-var">vs. día anterior: —</small>
+    </article>
+    <article class="kpi">
+      <span>Ticket promedio</span>
+      <strong id="kpi-ticket">$0</strong>
+      <small>Ventas / transacciones válidas</small>
+    </article>
+  </section>
+
+  <section class="grid">
+    <article class="card">
+      <h2>Ventas por zona</h2>
+      <div id="zonas"></div>
+    </article>
+    <article class="card">
+      <h2>Ventas por producto</h2>
+      <div id="productos"></div>
+    </article>
+  </section>
+
+  <section class="card table-card">
+    <h2>Variación contra el día anterior por zona</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Zona</th>
+          <th class="num">Ventas del día</th>
+          <th class="num">Día anterior</th>
+          <th class="num">Variación</th>
+        </tr>
+      </thead>
+      <tbody id="variacion"></tbody>
+    </table>
+  </section>
+
+  <footer>
+    <span>Modelo: fact_transacciones + dim_punto (SCD2) + dim_producto + dim_canal + dim_estado + dim_fecha.</span>
+    <span id="generado"></span>
+  </footer>
+</div>
+
+<script>
+const DATOS = {"fechas": ["2026-10-25", "2026-10-26", "2026-10-27", "2026-10-28"], "fecha_inicial": "2026-10-27", "datos": {"2026-10-25": [{"zona": "Norte", "producto": "GIRO", "canal": "APP", "ventas": 3006000, "transacciones": 2}, {"zona": "Norte", "producto": "GIRO", "canal": "POS", "ventas": 3097000, "transacciones": 3}, {"zona": "Norte", "producto": "GIRO", "canal": "WEB", "ventas": 3083000, "transacciones": 3}, {"zona": "Norte", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 2310400, "transacciones": 5}, {"zona": "Norte", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 4586500, "transacciones": 9}, {"zona": "Norte", "producto": "RECARGA", "canal": "APP", "ventas": 73000, "transacciones": 5}, {"zona": "Norte", "producto": "RECARGA", "canal": "POS", "ventas": 263000, "transacciones": 15}, {"zona": "Norte", "producto": "RECARGA", "canal": "WEB", "ventas": 10000, "transacciones": 3}, {"zona": "Oriente", "producto": "GIRO", "canal": "APP", "ventas": 1903000, "transacciones": 1}, {"zona": "Oriente", "producto": "GIRO", "canal": "WEB", "ventas": 970000, "transacciones": 1}, {"zona": "Oriente", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 1381400, "transacciones": 4}, {"zona": "Oriente", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 6021000, "transacciones": 12}, {"zona": "Oriente", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 961200, "transacciones": 3}, {"zona": "Oriente", "producto": "RECARGA", "canal": "APP", "ventas": 47000, "transacciones": 4}, {"zona": "Oriente", "producto": "RECARGA", "canal": "POS", "ventas": 238000, "transacciones": 15}, {"zona": "Oriente", "producto": "RECARGA", "canal": "WEB", "ventas": 102000, "transacciones": 5}, {"zona": "SIN ZONA", "producto": "GIRO", "canal": "POS", "ventas": 316000, "transacciones": 1}, {"zona": "SIN ZONA", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 737900, "transacciones": 2}, {"zona": "SIN ZONA", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 226900, "transacciones": 1}, {"zona": "SIN ZONA", "producto": "RECARGA", "canal": "POS", "ventas": 30000, "transacciones": 1}, {"zona": "Suroeste", "producto": "GIRO", "canal": "POS", "ventas": 3296000, "transacciones": 3}, {"zona": "Suroeste", "producto": "GIRO", "canal": "WEB", "ventas": 1507000, "transacciones": 2}, {"zona": "Suroeste", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 937600, "transacciones": 2}, {"zona": "Suroeste", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 2926900, "transacciones": 6}, {"zona": "Suroeste", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 77800, "transacciones": 1}, {"zona": "Suroeste", "producto": "RECARGA", "canal": "APP", "ventas": 35000, "transacciones": 3}, {"zona": "Suroeste", "producto": "RECARGA", "canal": "POS", "ventas": 247000, "transacciones": 12}, {"zona": "Suroeste", "producto": "RECARGA", "canal": "WEB", "ventas": 12000, "transacciones": 2}, {"zona": "Valle de Aburrá", "producto": "GIRO", "canal": "APP", "ventas": 5482000, "transacciones": 3}, {"zona": "Valle de Aburrá", "producto": "GIRO", "canal": "POS", "ventas": 16530000, "transacciones": 10}, {"zona": "Valle de Aburrá", "producto": "GIRO", "canal": "WEB", "ventas": 6792000, "transacciones": 3}, {"zona": "Valle de Aburrá", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 3926600, "transacciones": 10}, {"zona": "Valle de Aburrá", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 10529800, "transacciones": 28}, {"zona": "Valle de Aburrá", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 1845400, "transacciones": 4}, {"zona": "Valle de Aburrá", "producto": "RECARGA", "canal": "APP", "ventas": 275000, "transacciones": 16}, {"zona": "Valle de Aburrá", "producto": "RECARGA", "canal": "POS", "ventas": 463000, "transacciones": 29}, {"zona": "Valle de Aburrá", "producto": "RECARGA", "canal": "WEB", "ventas": 187000, "transacciones": 9}], "2026-10-26": [{"zona": "NO CATALOGADO", "producto": "RECARGA", "canal": "POS", "ventas": 35000, "transacciones": 4}, {"zona": "Norte", "producto": "GIRO", "canal": "APP", "ventas": 7861000, "transacciones": 5}, {"zona": "Norte", "producto": "GIRO", "canal": "POS", "ventas": 44138000, "transacciones": 29}, {"zona": "Norte", "producto": "GIRO", "canal": "WEB", "ventas": 5038000, "transacciones": 4}, {"zona": "Norte", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 9662300, "transacciones": 22}, {"zona": "Norte", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 38816300, "transacciones": 98}, {"zona": "Norte", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 2498800, "transacciones": 8}, {"zona": "Norte", "producto": "RECARGA", "canal": "APP", "ventas": 284000, "transacciones": 26}, {"zona": "Norte", "producto": "RECARGA", "canal": "POS", "ventas": 2376000, "transacciones": 139}, {"zona": "Norte", "producto": "RECARGA", "canal": "WEB", "ventas": 326000, "transacciones": 21}, {"zona": "Oriente", "producto": "GIRO", "canal": "APP", "ventas": 4883000, "transacciones": 5}, {"zona": "Oriente", "producto": "GIRO", "canal": "POS", "ventas": 63845000, "transacciones": 41}, {"zona": "Oriente", "producto": "GIRO", "canal": "WEB", "ventas": 5559000, "transacciones": 5}, {"zona": "Oriente", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 4681000, "transacciones": 12}, {"zona": "Oriente", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 45754100, "transacciones": 104}, {"zona": "Oriente", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 4362100, "transacciones": 11}, {"zona": "Oriente", "producto": "RECARGA", "canal": "APP", "ventas": 515000, "transacciones": 27}, {"zona": "Oriente", "producto": "RECARGA", "canal": "POS", "ventas": 2231000, "transacciones": 146}, {"zona": "Oriente", "producto": "RECARGA", "canal": "WEB", "ventas": 360000, "transacciones": 18}, {"zona": "SIN ZONA", "producto": "GIRO", "canal": "APP", "ventas": 9073000, "transacciones": 5}, {"zona": "SIN ZONA", "producto": "GIRO", "canal": "POS", "ventas": 19599000, "transacciones": 13}, {"zona": "SIN ZONA", "producto": "GIRO", "canal": "WEB", "ventas": 6892000, "transacciones": 4}, {"zona": "SIN ZONA", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 3082700, "transacciones": 5}, {"zona": "SIN ZONA", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 8944700, "transacciones": 24}, {"zona": "SIN ZONA", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 457200, "transacciones": 1}, {"zona": "SIN ZONA", "producto": "RECARGA", "canal": "APP", "ventas": 70000, "transacciones": 6}, {"zona": "SIN ZONA", "producto": "RECARGA", "canal": "POS", "ventas": 528000, "transacciones": 25}, {"zona": "SIN ZONA", "producto": "RECARGA", "canal": "WEB", "ventas": 96000, "transacciones": 5}, {"zona": "Suroeste", "producto": "GIRO", "canal": "APP", "ventas": 13889000, "transacciones": 8}, {"zona": "Suroeste", "producto": "GIRO", "canal": "POS", "ventas": 59616000, "transacciones": 38}, {"zona": "Suroeste", "producto": "GIRO", "canal": "WEB", "ventas": 7070000, "transacciones": 3}, {"zona": "Suroeste", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 6273100, "transacciones": 16}, {"zona": "Suroeste", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 31317000, "transacciones": 81}, {"zona": "Suroeste", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 2485400, "transacciones": 8}, {"zona": "Suroeste", "producto": "RECARGA", "canal": "APP", "ventas": 344000, "transacciones": 23}, {"zona": "Suroeste", "producto": "RECARGA", "canal": "POS", "ventas": 1888000, "transacciones": 118}, {"zona": "Suroeste", "producto": "RECARGA", "canal": "WEB", "ventas": 242000, "transacciones": 19}, {"zona": "Valle de Aburrá", "producto": "GIRO", "canal": "APP", "ventas": 33165000, "transacciones": 24}, {"zona": "Valle de Aburrá", "producto": "GIRO", "canal": "POS", "ventas": 159334000, "transacciones": 98}, {"zona": "Valle de Aburrá", "producto": "GIRO", "canal": "WEB", "ventas": 13898000, "transacciones": 13}, {"zona": "Valle de Aburrá", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 25443700, "transacciones": 53}, {"zona": "Valle de Aburrá", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 105934700, "transacciones": 271}, {"zona": "Valle de Aburrá", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 15473200, "transacciones": 38}, {"zona": "Valle de Aburrá", "producto": "RECARGA", "canal": "APP", "ventas": 842000, "transacciones": 62}, {"zona": "Valle de Aburrá", "producto": "RECARGA", "canal": "POS", "ventas": 6608000, "transacciones": 406}, {"zona": "Valle de Aburrá", "producto": "RECARGA", "canal": "WEB", "ventas": 794000, "transacciones": 55}], "2026-10-27": [{"zona": "NO CATALOGADO", "producto": "RECARGA", "canal": "POS", "ventas": 65000, "transacciones": 8}, {"zona": "Norte", "producto": "GIRO", "canal": "APP", "ventas": 6172000, "transacciones": 5}, {"zona": "Norte", "producto": "GIRO", "canal": "POS", "ventas": 40079000, "transacciones": 30}, {"zona": "Norte", "producto": "GIRO", "canal": "WEB", "ventas": 11179000, "transacciones": 8}, {"zona": "Norte", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 6575600, "transacciones": 14}, {"zona": "Norte", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 38581800, "transacciones": 87}, {"zona": "Norte", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 5714700, "transacciones": 15}, {"zona": "Norte", "producto": "RECARGA", "canal": "APP", "ventas": 332000, "transacciones": 18}, {"zona": "Norte", "producto": "RECARGA", "canal": "POS", "ventas": 2104000, "transacciones": 108}, {"zona": "Norte", "producto": "RECARGA", "canal": "WEB", "ventas": 200000, "transacciones": 16}, {"zona": "Oriente", "producto": "GIRO", "canal": "APP", "ventas": 12338000, "transacciones": 9}, {"zona": "Oriente", "producto": "GIRO", "canal": "POS", "ventas": 72120000, "transacciones": 51}, {"zona": "Oriente", "producto": "GIRO", "canal": "WEB", "ventas": 7697000, "transacciones": 4}, {"zona": "Oriente", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 14319600, "transacciones": 31}, {"zona": "Oriente", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 55125400, "transacciones": 135}, {"zona": "Oriente", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 6079700, "transacciones": 16}, {"zona": "Oriente", "producto": "RECARGA", "canal": "APP", "ventas": 681000, "transacciones": 39}, {"zona": "Oriente", "producto": "RECARGA", "canal": "POS", "ventas": 2102000, "transacciones": 124}, {"zona": "Oriente", "producto": "RECARGA", "canal": "WEB", "ventas": 304000, "transacciones": 20}, {"zona": "SIN ZONA", "producto": "GIRO", "canal": "APP", "ventas": 8425000, "transacciones": 3}, {"zona": "SIN ZONA", "producto": "GIRO", "canal": "POS", "ventas": 4879000, "transacciones": 4}, {"zona": "SIN ZONA", "producto": "GIRO", "canal": "WEB", "ventas": 3981000, "transacciones": 2}, {"zona": "SIN ZONA", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 1090400, "transacciones": 3}, {"zona": "SIN ZONA", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 12145000, "transacciones": 31}, {"zona": "SIN ZONA", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 529000, "transacciones": 2}, {"zona": "SIN ZONA", "producto": "RECARGA", "canal": "APP", "ventas": 77000, "transacciones": 8}, {"zona": "SIN ZONA", "producto": "RECARGA", "canal": "POS", "ventas": 629000, "transacciones": 41}, {"zona": "SIN ZONA", "producto": "RECARGA", "canal": "WEB", "ventas": 82000, "transacciones": 3}, {"zona": "Suroeste", "producto": "GIRO", "canal": "APP", "ventas": 11137000, "transacciones": 5}, {"zona": "Suroeste", "producto": "GIRO", "canal": "POS", "ventas": 34474000, "transacciones": 22}, {"zona": "Suroeste", "producto": "GIRO", "canal": "WEB", "ventas": 4350000, "transacciones": 4}, {"zona": "Suroeste", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 1723300, "transacciones": 5}, {"zona": "Suroeste", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 36321400, "transacciones": 88}, {"zona": "Suroeste", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 1190600, "transacciones": 4}, {"zona": "Suroeste", "producto": "RECARGA", "canal": "APP", "ventas": 173000, "transacciones": 13}, {"zona": "Suroeste", "producto": "RECARGA", "canal": "POS", "ventas": 1763000, "transacciones": 97}, {"zona": "Suroeste", "producto": "RECARGA", "canal": "WEB", "ventas": 170000, "transacciones": 11}, {"zona": "Urabá", "producto": "GIRO", "canal": "APP", "ventas": 10338000, "transacciones": 7}, {"zona": "Urabá", "producto": "GIRO", "canal": "POS", "ventas": 35079000, "transacciones": 25}, {"zona": "Urabá", "producto": "GIRO", "canal": "WEB", "ventas": 8758000, "transacciones": 6}, {"zona": "Urabá", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 2518000, "transacciones": 8}, {"zona": "Urabá", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 35059900, "transacciones": 95}, {"zona": "Urabá", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 3041900, "transacciones": 7}, {"zona": "Urabá", "producto": "RECARGA", "canal": "APP", "ventas": 316000, "transacciones": 17}, {"zona": "Urabá", "producto": "RECARGA", "canal": "POS", "ventas": 1478000, "transacciones": 99}, {"zona": "Urabá", "producto": "RECARGA", "canal": "WEB", "ventas": 222000, "transacciones": 14}, {"zona": "Valle de Aburrá", "producto": "GIRO", "canal": "APP", "ventas": 26573000, "transacciones": 15}, {"zona": "Valle de Aburrá", "producto": "GIRO", "canal": "POS", "ventas": 172158000, "transacciones": 121}, {"zona": "Valle de Aburrá", "producto": "GIRO", "canal": "WEB", "ventas": 24439000, "transacciones": 17}, {"zona": "Valle de Aburrá", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 23597000, "transacciones": 67}, {"zona": "Valle de Aburrá", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 146037200, "transacciones": 329}, {"zona": "Valle de Aburrá", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 13231200, "transacciones": 36}, {"zona": "Valle de Aburrá", "producto": "RECARGA", "canal": "APP", "ventas": 906000, "transacciones": 58}, {"zona": "Valle de Aburrá", "producto": "RECARGA", "canal": "POS", "ventas": 6797000, "transacciones": 402}, {"zona": "Valle de Aburrá", "producto": "RECARGA", "canal": "WEB", "ventas": 812000, "transacciones": 45}], "2026-10-28": [{"zona": "Norte", "producto": "GIRO", "canal": "APP", "ventas": 7818000, "transacciones": 5}, {"zona": "Norte", "producto": "GIRO", "canal": "POS", "ventas": 32856000, "transacciones": 22}, {"zona": "Norte", "producto": "GIRO", "canal": "WEB", "ventas": 10229000, "transacciones": 5}, {"zona": "Norte", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 6237100, "transacciones": 15}, {"zona": "Norte", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 35394000, "transacciones": 77}, {"zona": "Norte", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 1453000, "transacciones": 5}, {"zona": "Norte", "producto": "RECARGA", "canal": "APP", "ventas": 253000, "transacciones": 12}, {"zona": "Norte", "producto": "RECARGA", "canal": "POS", "ventas": 1453000, "transacciones": 88}, {"zona": "Norte", "producto": "RECARGA", "canal": "WEB", "ventas": 190000, "transacciones": 10}, {"zona": "Oriente", "producto": "GIRO", "canal": "APP", "ventas": 18438000, "transacciones": 9}, {"zona": "Oriente", "producto": "GIRO", "canal": "POS", "ventas": 73666000, "transacciones": 42}, {"zona": "Oriente", "producto": "GIRO", "canal": "WEB", "ventas": 2783000, "transacciones": 2}, {"zona": "Oriente", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 4361300, "transacciones": 11}, {"zona": "Oriente", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 31916800, "transacciones": 75}, {"zona": "Oriente", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 6149300, "transacciones": 13}, {"zona": "Oriente", "producto": "RECARGA", "canal": "APP", "ventas": 274000, "transacciones": 16}, {"zona": "Oriente", "producto": "RECARGA", "canal": "POS", "ventas": 1902000, "transacciones": 108}, {"zona": "Oriente", "producto": "RECARGA", "canal": "WEB", "ventas": 163000, "transacciones": 12}, {"zona": "SIN ZONA", "producto": "GIRO", "canal": "POS", "ventas": 10718000, "transacciones": 9}, {"zona": "SIN ZONA", "producto": "GIRO", "canal": "WEB", "ventas": 2079000, "transacciones": 1}, {"zona": "SIN ZONA", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 3076500, "transacciones": 6}, {"zona": "SIN ZONA", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 8234200, "transacciones": 18}, {"zona": "SIN ZONA", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 104300, "transacciones": 1}, {"zona": "SIN ZONA", "producto": "RECARGA", "canal": "APP", "ventas": 97000, "transacciones": 6}, {"zona": "SIN ZONA", "producto": "RECARGA", "canal": "POS", "ventas": 531000, "transacciones": 33}, {"zona": "SIN ZONA", "producto": "RECARGA", "canal": "WEB", "ventas": 18000, "transacciones": 2}, {"zona": "Suroeste", "producto": "GIRO", "canal": "APP", "ventas": 9437000, "transacciones": 6}, {"zona": "Suroeste", "producto": "GIRO", "canal": "POS", "ventas": 30678000, "transacciones": 20}, {"zona": "Suroeste", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 2727200, "transacciones": 7}, {"zona": "Suroeste", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 21685000, "transacciones": 51}, {"zona": "Suroeste", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 4826700, "transacciones": 10}, {"zona": "Suroeste", "producto": "RECARGA", "canal": "APP", "ventas": 490000, "transacciones": 21}, {"zona": "Suroeste", "producto": "RECARGA", "canal": "POS", "ventas": 1428000, "transacciones": 86}, {"zona": "Suroeste", "producto": "RECARGA", "canal": "WEB", "ventas": 165000, "transacciones": 11}, {"zona": "Urabá", "producto": "GIRO", "canal": "APP", "ventas": 7353000, "transacciones": 4}, {"zona": "Urabá", "producto": "GIRO", "canal": "POS", "ventas": 32772000, "transacciones": 20}, {"zona": "Urabá", "producto": "GIRO", "canal": "WEB", "ventas": 827000, "transacciones": 1}, {"zona": "Urabá", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 2778800, "transacciones": 7}, {"zona": "Urabá", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 12664100, "transacciones": 35}, {"zona": "Urabá", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 2411000, "transacciones": 5}, {"zona": "Urabá", "producto": "RECARGA", "canal": "APP", "ventas": 186000, "transacciones": 12}, {"zona": "Urabá", "producto": "RECARGA", "canal": "POS", "ventas": 1330000, "transacciones": 78}, {"zona": "Urabá", "producto": "RECARGA", "canal": "WEB", "ventas": 75000, "transacciones": 4}, {"zona": "Valle de Aburrá", "producto": "GIRO", "canal": "APP", "ventas": 14313000, "transacciones": 11}, {"zona": "Valle de Aburrá", "producto": "GIRO", "canal": "POS", "ventas": 108489000, "transacciones": 78}, {"zona": "Valle de Aburrá", "producto": "GIRO", "canal": "WEB", "ventas": 18779000, "transacciones": 11}, {"zona": "Valle de Aburrá", "producto": "PAGO_SERVICIOS", "canal": "APP", "ventas": 14246200, "transacciones": 32}, {"zona": "Valle de Aburrá", "producto": "PAGO_SERVICIOS", "canal": "POS", "ventas": 80038000, "transacciones": 191}, {"zona": "Valle de Aburrá", "producto": "PAGO_SERVICIOS", "canal": "WEB", "ventas": 9605300, "transacciones": 22}, {"zona": "Valle de Aburrá", "producto": "RECARGA", "canal": "APP", "ventas": 556000, "transacciones": 38}, {"zona": "Valle de Aburrá", "producto": "RECARGA", "canal": "POS", "ventas": 4585000, "transacciones": 290}, {"zona": "Valle de Aburrá", "producto": "RECARGA", "canal": "WEB", "ventas": 612000, "transacciones": 39}]}, "meta": {"generado": "2026-11-13T20:50:36", "fuente": "dw_pagared (SQLite)"}};
+
+const formatoCOP = new Intl.NumberFormat("es-CO", {
+  style: "currency", currency: "COP", maximumFractionDigits: 0
+});
+const formatoNumero = new Intl.NumberFormat("es-CO");
+const formatoPct = new Intl.NumberFormat("es-CO", {
+  style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1
+});
+
+const $ = (id) => document.getElementById(id);
+const sumar = (filas, campo) => filas.reduce((total, fila) => total + Number(fila[campo] || 0), 0);
+const escapar = (texto) => String(texto).replace(/[&<>"']/g, (c) => ({
+  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+}[c]));
+
+function fechaAnterior(fecha) {
+  const d = new Date(fecha + "T00:00:00");
+  d.setDate(d.getDate() - 1);
+  return d.toISOString().slice(0, 10);
+}
+
+function rotuloFecha(fecha) {
+  const [anio, mes, dia] = fecha.split("-");
+  return `${dia}/${mes}/${anio}`;
+}
+
+function agrupar(filas, campo) {
+  const mapa = new Map();
+  for (const fila of filas) {
+    const clave = fila[campo];
+    const actual = mapa.get(clave) || { etiqueta: clave, ventas: 0, transacciones: 0 };
+    actual.ventas += Number(fila.ventas);
+    actual.transacciones += Number(fila.transacciones);
+    mapa.set(clave, actual);
+  }
+  return [...mapa.values()].sort((a, b) => b.ventas - a.ventas);
+}
+
+function barras(datos, contenedor) {
+  if (!datos.length) {
+    contenedor.innerHTML = '<p class="empty">Sin ventas para los filtros seleccionados.</p>';
+    return;
+  }
+  const maximo = Math.max(...datos.map((d) => d.ventas), 1);
+  contenedor.innerHTML = datos.map((d) => {
+    const ancho = Math.max((d.ventas / maximo) * 100, 1.5);
+    return `<div class="bar-row">
+      <span class="label" title="${escapar(d.etiqueta)}">${escapar(d.etiqueta)}</span>
+      <div class="track"><div class="fill" style="width:${ancho.toFixed(1)}%"></div></div>
+      <span class="value">${formatoCOP.format(d.ventas)}</span>
+    </div>`;
+  }).join("");
+}
+
+function clases(valor) {
+  return valor === null ? "neutro" : (valor >= 0 ? "positivo" : "negativo");
+}
+
+function render() {
+  const fecha = $("fecha").value;
+  const zonaFiltro = $("zona").value;
+  const canalFiltro = $("canal").value;
+  const filas = (DATOS.datos[fecha] || []).filter((f) =>
+    (zonaFiltro === "todas" || f.zona === zonaFiltro) &&
+    (canalFiltro === "todos" || f.canal === canalFiltro)
+  );
+  const anterior = fechaAnterior(fecha);
+  const filasAnterior = (DATOS.datos[anterior] || []).filter((f) =>
+    (zonaFiltro === "todas" || f.zona === zonaFiltro) &&
+    (canalFiltro === "todos" || f.canal === canalFiltro)
+  );
+
+  const ventas = sumar(filas, "ventas");
+  const transacciones = sumar(filas, "transacciones");
+  const ventasAnterior = sumar(filasAnterior, "ventas");
+  const transaccionesAnterior = sumar(filasAnterior, "transacciones");
+  const ticket = transacciones ? ventas / transacciones : 0;
+  const variacion = ventasAnterior ? (ventas - ventasAnterior) / ventasAnterior : null;
+  const variacionTransacciones = transaccionesAnterior
+    ? (transacciones - transaccionesAnterior) / transaccionesAnterior
+    : null;
+
+  $("kpi-ventas").textContent = formatoCOP.format(ventas);
+  $("kpi-transacciones").textContent = formatoNumero.format(transacciones);
+  $("kpi-ticket").textContent = formatoCOP.format(Math.round(ticket));
+
+  const detalleVariacion = variacion === null
+    ? `vs. ${rotuloFecha(anterior)}: N/A (sin base)`
+    : `vs. ${rotuloFecha(anterior)}: ${formatoPct.format(variacion)}`;
+  $("kpi-variacion").textContent = detalleVariacion;
+  $("kpi-variacion").className = clases(variacion);
+
+  $("kpi-transacciones-var").textContent = variacionTransacciones === null
+    ? `vs. ${rotuloFecha(anterior)}: N/A`
+    : `vs. ${rotuloFecha(anterior)}: ${formatoPct.format(variacionTransacciones)}`;
+  $("kpi-transacciones-var").className = clases(variacionTransacciones);
+
+  barras(agrupar(filas, "zona"), $("zonas"));
+  barras(agrupar(filas, "producto"), $("productos"));
+
+  const zonas = [...new Set(filas.map((f) => f.zona))].sort();
+  const cuerpo = $("variacion");
+  if (!zonas.length) {
+    cuerpo.innerHTML = '<tr><td colspan="4" class="empty">Sin datos para la fecha seleccionada.</td></tr>';
+  } else {
+    cuerpo.innerHTML = zonas.map((zona) => {
+      const actual = filas.filter((f) => f.zona === zona);
+      const previo = filasAnterior.filter((f) => f.zona === zona);
+      const ventasZona = sumar(actual, "ventas");
+      const ventasZonaAnterior = sumar(previo, "ventas");
+      const pct = ventasZonaAnterior ? (ventasZona - ventasZonaAnterior) / ventasZonaAnterior : null;
+      return `<tr>
+        <td>${escapar(zona)}</td>
+        <td class="num">${formatoCOP.format(ventasZona)}</td>
+        <td class="num">${formatoCOP.format(ventasZonaAnterior)}</td>
+        <td class="num ${clases(pct)}">${pct === null ? "N/A" : formatoPct.format(pct)}</td>
+      </tr>`;
+    }).join("");
+  }
+  $("generado").textContent = `Generado ${DATOS.meta.generado}`;
+}
+
+function iniciarFiltros() {
+  const fechas = [...DATOS.fechas].sort();
+  $("fecha").innerHTML = fechas.map((f) =>
+    `<option value="${f}">${rotuloFecha(f)}</option>`
+  ).join("");
+  $("fecha").value = fechas.includes(DATOS.fecha_inicial)
+    ? DATOS.fecha_inicial
+    : fechas[fechas.length - 1];
+
+  const zonas = [...new Set(fechas.flatMap((f) => (DATOS.datos[f] || []).map((x) => x.zona)))].sort();
+  $("zona").innerHTML += zonas.map((z) => `<option value="${escapar(z)}">${escapar(z)}</option>`).join("");
+
+  const canales = [...new Set(fechas.flatMap((f) => (DATOS.datos[f] || []).map((x) => x.canal)))].sort();
+  $("canal").innerHTML += canales.map((c) => `<option value="${escapar(c)}">${escapar(c)}</option>`).join("");
+
+  for (const id of ["fecha", "zona", "canal"]) $(id).addEventListener("change", render);
+  render();
+}
+
+iniciarFiltros();
+</script>
+</body>
+</html>

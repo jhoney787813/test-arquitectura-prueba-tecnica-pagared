@@ -7,10 +7,12 @@ FECHA ?= 2026-10-27
 DELTA ?= datos/transacciones_delta_20261028.csv
 PODMAN ?= podman
 IMAGEN ?= pagared-etl:local
+CHROME ?= /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+FECHA_COMPACTA = $(shell echo $(FECHA) | tr -d -)
 
 .DEFAULT_GOAL := ayuda
 
-.PHONY: ayuda setup test lint fmt perfil etl etl-delta consultas bi-export podman-build podman-demo podman-test spec spec-validate limpiar
+.PHONY: ayuda setup test lint fmt perfil etl etl-delta consultas bi-export b6 b6-dashboard b6-captura podman-build podman-demo podman-test spec spec-validate limpiar
 
 ayuda:
 	@echo "Objetivos disponibles:"
@@ -23,6 +25,7 @@ ayuda:
 	@echo "  make etl-delta   Ejecuta el pipeline y aplica el delta"
 	@echo "  make consultas   Ejecuta las consultas B3"
 	@echo "  make bi-export   Exporta el modelo a CSV para Power BI"
+	@echo "  make b6          Genera tablero HTML, captura y datos de Power BI"
 	@echo "  make podman-build  Construye la imagen con Podman"
 	@echo "  make podman-demo   Ejecuta el demo completo en un contenedor"
 	@echo "  make podman-test   Ejecuta pytest dentro del contenedor"
@@ -58,6 +61,22 @@ consultas:
 
 bi-export:
 	$(BIN)/python parte-6-b6-powerbi/scripts/exportar_datos.py
+
+b6: etl-delta bi-export b6-captura
+
+b6-dashboard: etl-delta
+	$(BIN)/python parte-6-b6-powerbi/scripts/generar_tablero.py \
+		--db db/pagared.db \
+		--salida parte-6-b6-powerbi/powerbi/tablero_ventas.html \
+		--fecha $(FECHA)
+
+b6-captura: b6-dashboard
+	"$(CHROME)" --headless=new --disable-gpu --hide-scrollbars \
+		--no-first-run --no-default-browser-check \
+		--user-data-dir=/tmp/pagared-chrome-b6 \
+		--window-size=1440,1000 --virtual-time-budget=4000 \
+		--screenshot="$(CURDIR)/parte-6-b6-powerbi/powerbi/capturas/tablero_$(FECHA_COMPACTA).png" \
+		"file://$(CURDIR)/parte-6-b6-powerbi/powerbi/tablero_ventas.html"
 
 podman-build:
 	$(PODMAN) build -t $(IMAGEN) -f parte-5-b5-operacion/infra/Containerfile .

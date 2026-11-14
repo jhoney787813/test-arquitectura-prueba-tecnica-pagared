@@ -32,6 +32,10 @@ python -m etl.consultas --db "$DB" --fecha "$FECHA" --salida /app/salida/consult
 echo
 echo "== 4. Exportación para Power BI =="
 python /app/parte-6-b6-powerbi/scripts/exportar_datos.py --db "$DB" --destino /app/salida/powerbi
+python /app/parte-6-b6-powerbi/scripts/generar_tablero.py \
+  --db "$DB" \
+  --salida /app/salida/powerbi/tablero_ventas.html \
+  --fecha "$FECHA"
 
 echo
 echo "== 5. Envío B4 idempotente (SMTP local de prueba) =="

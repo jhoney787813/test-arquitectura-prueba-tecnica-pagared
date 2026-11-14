@@ -186,7 +186,74 @@ _Pendiente: causa raíz del incidente, despliegue y conectividad con Azure._
 
 ## 7. Power BI (B6)
 
-_Pendiente: medidas DAX, capturas y justificación._
+**Limitación:** Power BI Desktop solo funciona en Windows; el desarrollo se hizo
+en macOS. Por eso no se generó `tablero_ventas.pbix` ni capturas reales de
+Power BI Desktop. La prueba permite entregar el diseño, las medidas DAX y los
+datos exportados, indicando la limitación.
+
+### 7.1 Modelo y datos
+
+Se usa el modelo en estrella de la Parte B2. Las relaciones son
+`fact_transacciones` con `dim_fecha`, `dim_punto` (SCD2), `dim_producto`,
+`dim_canal` y `dim_estado`. `dim_fecha` se marca como tabla de fechas para que
+`DATEADD` funcione. Los CSV están en
+[`powerbi/datos/`](../parte-6-b6-powerbi/powerbi/datos/) y el diseño completo
+en [`DISENO_TABLERO.md`](../parte-6-b6-powerbi/powerbi/DISENO_TABLERO.md).
+
+### 7.2 Medidas DAX
+
+```dax
+Ventas =
+CALCULATE(
+    SUM(fact_transacciones[valor_cop]),
+    dim_estado[cuenta_como_venta] = 1
+)
+
+Transacciones =
+CALCULATE(
+    COUNTROWS(fact_transacciones),
+    dim_estado[cuenta_como_venta] = 1
+)
+
+TicketPromedio = DIVIDE([Ventas], [Transacciones])
+
+VentasDiaAnterior =
+CALCULATE([Ventas], DATEADD(dim_fecha[fecha], -1, DAY))
+
+VariacionVentas =
+VAR Anterior = [VentasDiaAnterior]
+RETURN
+    IF(
+        ISBLANK(Anterior) || Anterior = 0,
+        BLANK(),
+        DIVIDE([Ventas] - Anterior, Anterior)
+    )
+```
+
+El archivo completo está en
+[`medidas.dax`](../parte-6-b6-powerbi/powerbi/medidas.dax); incluye también
+transacciones y ticket del día anterior, y la expresión de RLS opcional.
+
+### 7.3 Tablero y decisión
+
+![Prototipo del tablero con el 27/10](../parte-6-b6-powerbi/powerbi/capturas/tablero_20261027.png)
+
+*Prototipo funcional generado desde `dw_pagared`; no es una captura de Power BI
+Desktop. El `.pbix` se construye en Windows con el diseño y las medidas.*
+
+La página única muestra ventas, transacciones y ticket promedio del día; barras
+por zona y producto; tabla de variación contra el día anterior; y filtros de
+fecha, zona y canal. Las barras permiten ver de inmediato qué territorio o
+producto explica el resultado; la tabla evita la división por cero en zonas
+nuevas como Urabá (N/A). Laura puede decidir dónde enfocar el día sin esperar
+tres horas de Excel. El prototipo permite validar la misma lógica de filtros y
+medidas antes de construir el `.pbix`.
+
+### 7.4 Pendiente
+
+Construir y validar el `.pbix`, tomar capturas reales y probar RLS en un equipo
+Windows. El prototipo y los datos exportados permiten reconstruirlo sin la base
+local.
 
 ---
 

@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tablero de ventas — PagaRed</title>
+<style>
+  :root {
+    --azul: #123a63;
+    --azul-2: #1f5c94;
+    --fondo: #eef2f7;
+    --texto: #1c2a3a;
+    --suave: #65758b;
+    --linea: #dbe3ee;
+    --verde: #1b7f5a;
+    --rojo: #b23a48;
+    --blanco: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  .page { max-width: 1280px; margin: 0 auto; padding: 24px 28px 36px; }
+  header {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: flex-start;
+    background: linear-gradient(120deg, var(--azul), var(--azul-2));
+    color: var(--blanco);
+    padding: 26px 30px;
+    border-radius: 18px;
+    box-shadow: 0 12px 26px rgba(18, 58, 99, .22);
+  }
+  .eyebrow { margin: 0 0 6px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; opacity: .8; }
+  h1 { margin: 0; font-size: 30px; font-weight: 650; letter-spacing: -.02em; }
+  .sub { margin: 8px 0 0; font-size: 13px; opacity: .85; }
+  .badge {
+    border: 1px solid rgba(255,255,255,.35);
+    background: rgba(255,255,255,.12);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: end;
+    margin: 20px 0 16px;
+    padding: 16px 18px;
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    border-radius: 14px;
+  }
+  .filters label { display: grid; gap: 5px; font-size: 11px; color: var(--suave); text-transform: uppercase; letter-spacing: .06em; }
+  select {
+    appearance: none;
+    border: 1px solid var(--linea);
+    background: #f8fafc;
+    color: var(--texto);
+    border-radius: 9px;
+    padding: 9px 32px 9px 11px;
+    font: inherit;
+    font-size: 13px;
+    min-width: 160px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--suave) 50%), linear-gradient(135deg, var(--suave) 50%, transparent 50%);
+    background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+  }
+  .hint { margin-left: auto; font-size: 11px; color: var(--suave); }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .kpi {
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 12px rgba(18, 58, 99, .04);
+  }
+  .kpi span { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--suave); }
+  .kpi strong { display: block; margin: 8px 0 4px; font-size: 27px; letter-spacing: -.02em; }
+  .kpi small { color: var(--suave); font-size: 12px; }
+  .kpi .positivo { color: var(--verde); }
+  .kpi .negativo { color: var(--rojo); }
+  .grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 14px; margin-top: 14px; }
+  .card {
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 12px rgba(18, 58, 99, .04);
+  }
+  .card h2 { margin: 0 0 14px; font-size: 14px; color: var(--azul); }
+  .bar-row { display: grid; grid-template-columns: 135px 1fr 110px; gap: 10px; align-items: center; margin: 9px 0; font-size: 12px; }
+  .bar-row .label { color: var(--texto); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bar-row .track { height: 9px; background: #eef2f7; border-radius: 99px; overflow: hidden; }
+  .bar-row .fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #2b6fa8, #62a7d9); }
+  .bar-row .value { text-align: right; font-variant-numeric: tabular-nums; color: var(--suave); }
+  .table-card { margin-top: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { text-align: left; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--suave); border-bottom: 1px solid var(--linea); padding: 9px 8px; }
+  td { border-bottom: 1px solid #f0f3f8; padding: 9px 8px; font-variant-numeric: tabular-nums; }
+  td.num, th.num { text-align: right; }
+  .positivo { color: var(--verde); font-weight: 600; }
+  .negativo { color: var(--rojo); font-weight: 600; }
+  .neutro { color: var(--suave); }
+  footer { margin-top: 18px; color: var(--suave); font-size: 11px; display: flex; justify-content: space-between; gap: 20px; }
+  .empty { color: var(--suave); font-size: 12px; padding: 12px 0; }
+  @media (max-width: 900px) {
+    .kpis, .grid { grid-template-columns: 1fr; }
+    header { flex-direction: column; }
+    .hint { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div>
+      <p class="eyebrow">PagaRed · Inteligencia Empresarial</p>
+      <h1>Tablero de ventas</h1>
+      <p class="sub">Prototipo del diseño para Power BI · fuente: modelo dw_pagared</p>
+    </div>
+    <div class="badge">Prototipo funcional · .pbix pendiente (Windows)</div>
+  </header>
+
+  <section class="filters">
+    <label>Fecha<select id="fecha"></select></label>
+    <label>Zona<select id="zona"><option value="todas">Todas</option></select></label>
+    <label>Canal<select id="canal"><option value="todos">Todos</option></select></label>
+    <span class="hint">Ventas = APROBADA + REVERSADA · excluye punto 90001</span>
+  </section>
+
+  <section class="kpis">
+    <article class="kpi">
+      <span>Ventas del día</span>
+      <strong id="kpi-ventas">$0</strong>
+      <small id="kpi-variacion">vs. día anterior: —</small>
+    </article>
+    <article class="kpi">
+      <span>Transacciones</span>
+      <strong id="kpi-transacciones">0</strong>
+      <small id="kpi-transacciones-var">vs. día anterior: —</small>
+    </article>
+    <article class="kpi">
+      <span>Ticket promedio</span>
+      <strong id="kpi-ticket">$0</strong>
+      <small>Ventas / transacciones válidas</small>
+    </article>
+  </section>
+
+  <section class="grid">
+    <article class="card">
+      <h2>Ventas por zona</h2>
+      <div id="zonas"></div>
+    </article>
+    <article class="card">
+      <h2>Ventas por producto</h2>
+      <div id="productos"></div>
+    </article>
+  </section>
+
+  <section class="card table-card">
+    <h2>Variación contra el día anterior por zona</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Zona</th>
+          <th class="num">Ventas del día</th>
+          <th class="num">Día anterior</th>
+          <th class="num">Variación</th>
+        </tr>
+      </thead>
+      <tbody id="variacion"></tbody>
+    </table>
+  </section>
+
+  <footer>
+    <span>Modelo: fact_transacciones + dim_punto (SCD2) + dim_producto + dim_canal + dim_estado + dim_fecha.</span>
+    <span id="generado"></span>
+  </footer>
+</div>
+
+<script>
+const DATOS = __DATOS__;
+
+const formatoCOP = new Intl.NumberFormat("es-CO", {
+  style: "currency", currency: "COP", maximumFractionDigits: 0
+});
+const formatoNumero = new Intl.NumberFormat("es-CO");
+const formatoPct = new Intl.NumberFormat("es-CO", {
+  style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1
+});
+
+const $ = (id) => document.getElementById(id);
+const sumar = (filas, campo) => filas.reduce((total, fila) => total + Number(fila[campo] || 0), 0);
+const escapar = (texto) => String(texto).replace(/[&<>"']/g, (c) => ({
+  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+}[c]));
+
+function fechaAnterior(fecha) {
+  const d = new Date(fecha + "T00:00:00");
+  d.setDate(d.getDate() - 1);
+  return d.toISOString().slice(0, 10);
+}
+
+function rotuloFecha(fecha) {
+  const [anio, mes, dia] = fecha.split("-");
+  return `${dia}/${mes}/${anio}`;
+}
+
+function agrupar(filas, campo) {
+  const mapa = new Map();
+  for (const fila of filas) {
+    const clave = fila[campo];
+    const actual = mapa.get(clave) || { etiqueta: clave, ventas: 0, transacciones: 0 };
+    actual.ventas += Number(fila.ventas);
+    actual.transacciones += Number(fila.transacciones);
+    mapa.set(clave, actual);
+  }
+  return [...mapa.values()].sort((a, b) => b.ventas - a.ventas);
+}
+
+function barras(datos, contenedor) {
+  if (!datos.length) {
+    contenedor.innerHTML = '<p class="empty">Sin ventas para los filtros seleccionados.</p>';
+    return;
+  }
+  const maximo = Math.max(...datos.map((d) => d.ventas), 1);
+  contenedor.innerHTML = datos.map((d) => {
+    const ancho = Math.max((d.ventas / maximo) * 100, 1.5);
+    return `<div class="bar-row">
+      <span class="label" title="${escapar(d.etiqueta)}">${escapar(d.etiqueta)}</span>
+      <div class="track"><div class="fill" style="width:${ancho.toFixed(1)}%"></div></div>
+      <span class="value">${formatoCOP.format(d.ventas)}</span>
+    </div>`;
+  }).join("");
+}
+
+function clases(valor) {
+  return valor === null ? "neutro" : (valor >= 0 ? "positivo" : "negativo");
+}
+
+function render() {
+  const fecha = $("fecha").value;
+  const zonaFiltro = $("zona").value;
+  const canalFiltro = $("canal").value;
+  const filas = (DATOS.datos[fecha] || []).filter((f) =>
+    (zonaFiltro === "todas" || f.zona === zonaFiltro) &&
+    (canalFiltro === "todos" || f.canal === canalFiltro)
+  );
+  const anterior = fechaAnterior(fecha);
+  const filasAnterior = (DATOS.datos[anterior] || []).filter((f) =>
+    (zonaFiltro === "todas" || f.zona === zonaFiltro) &&
+    (canalFiltro === "todos" || f.canal === canalFiltro)
+  );
+
+  const ventas = sumar(filas, "ventas");
+  const transacciones = sumar(filas, "transacciones");
+  const ventasAnterior = sumar(filasAnterior, "ventas");
+  const transaccionesAnterior = sumar(filasAnterior, "transacciones");
+  const ticket = transacciones ? ventas / transacciones : 0;
+  const variacion = ventasAnterior ? (ventas - ventasAnterior) / ventasAnterior : null;
+  const variacionTransacciones = transaccionesAnterior
+    ? (transacciones - transaccionesAnterior) / transaccionesAnterior
+    : null;
+
+  $("kpi-ventas").textContent = formatoCOP.format(ventas);
+  $("kpi-transacciones").textContent = formatoNumero.format(transacciones);
+  $("kpi-ticket").textContent = formatoCOP.format(Math.round(ticket));
+
+  const detalleVariacion = variacion === null
+    ? `vs. ${rotuloFecha(anterior)}: N/A (sin base)`
+    : `vs. ${rotuloFecha(anterior)}: ${formatoPct.format(variacion)}`;
+  $("kpi-variacion").textContent = detalleVariacion;
+  $("kpi-variacion").className = clases(variacion);
+
+  $("kpi-transacciones-var").textContent = variacionTransacciones === null
+    ? `vs. ${rotuloFecha(anterior)}: N/A`
+    : `vs. ${rotuloFecha(anterior)}: ${formatoPct.format(variacionTransacciones)}`;
+  $("kpi-transacciones-var").className = clases(variacionTransacciones);
+
+  barras(agrupar(filas, "zona"), $("zonas"));
+  barras(agrupar(filas, "producto"), $("productos"));
+
+  const zonas = [...new Set(filas.map((f) => f.zona))].sort();
+  const cuerpo = $("variacion");
+  if (!zonas.length) {
+    cuerpo.innerHTML = '<tr><td colspan="4" class="empty">Sin datos para la fecha seleccionada.</td></tr>';
+  } else {
+    cuerpo.innerHTML = zonas.map((zona) => {
+      const actual = filas.filter((f) => f.zona === zona);
+      const previo = filasAnterior.filter((f) => f.zona === zona);
+      const ventasZona = sumar(actual, "ventas");
+      const ventasZonaAnterior = sumar(previo, "ventas");
+      const pct = ventasZonaAnterior ? (ventasZona - ventasZonaAnterior) / ventasZonaAnterior : null;
+      return `<tr>
+        <td>${escapar(zona)}</td>
+        <td class="num">${formatoCOP.format(ventasZona)}</td>
+        <td class="num">${formatoCOP.format(ventasZonaAnterior)}</td>
+        <td class="num ${clases(pct)}">${pct === null ? "N/A" : formatoPct.format(pct)}</td>
+      </tr>`;
+    }).join("");
+  }
+  $("generado").textContent = `Generado ${DATOS.meta.generado}`;
+}
+
+function iniciarFiltros() {
+  const fechas = [...DATOS.fechas].sort();
+  $("fecha").innerHTML = fechas.map((f) =>
+    `<option value="${f}">${rotuloFecha(f)}</option>`
+  ).join("");
+  $("fecha").value = fechas.includes(DATOS.fecha_inicial)
+    ? DATOS.fecha_inicial
+    : fechas[fechas.length - 1];
+
+  const zonas = [...new Set(fechas.flatMap((f) => (DATOS.datos[f] || []).map((x) => x.zona)))].sort();
+  $("zona").innerHTML += zonas.map((z) => `<option value="${escapar(z)}">${escapar(z)}</option>`).join("");
+
+  const canales = [...new Set(fechas.flatMap((f) => (DATOS.datos[f] || []).map((x) => x.canal)))].sort();
+  $("canal").innerHTML += canales.map((c) => `<option value="${escapar(c)}">${escapar(c)}</option>`).join("");
+
+  for (const id of ["fecha", "zona", "canal"]) $(id).addEventListener("change", render);
+  render();
+}
+
+iniciarFiltros();
+</script>
+</body>
+</html>

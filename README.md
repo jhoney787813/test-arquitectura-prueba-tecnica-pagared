@@ -28,7 +28,7 @@ y operarlo de forma confiable (idempotente, observable y con alertas).
 | B3 | Consultas SQL → [parte-3](parte-3-b3-sql/) | Implementado |
 | B4 | Revisión y envío corregido → [parte-4](parte-4-b4-revision/) | Implementado (v2 idempotente) |
 | B5 | Operación, incidente y despliegue → [parte-5](parte-5-b5-operacion/) | Contenedor y demo; falta análisis del incidente |
-| B6 | Tablero de Power BI → [parte-6](parte-6-b6-powerbi/) | Datos exportados; `.pbix` pendiente (macOS) |
+| B6 | Tablero de Power BI → [parte-6](parte-6-b6-powerbi/) | Prototipo HTML + DAX + captura; `.pbix` pendiente (macOS) |
 | — | Informe consolidado PDF | Pendiente de compilar |
 
 ---
@@ -206,6 +206,7 @@ make etl           # pipeline para 2026-10-27 (base)
 make etl-delta     # pipeline + delta del 28/10
 make consultas     # B3 sobre db/pagared.db
 make bi-export     # CSV para Power BI en parte-6.../powerbi/datos
+make b6            # datos + tablero HTML + captura del prototipo
 ```
 
 **Podman:**
@@ -222,8 +223,8 @@ El demo:
 2. Borra la base y carga `transacciones.csv`.
 3. Aplica `transacciones_delta_20261028.csv` sobre la misma base.
 4. Genera reportes antes/después, ejecuta las consultas B3, exporta el modelo
-   a CSV y envía el reporte por un SMTP local de prueba, comprobando que el
-   segundo intento no duplica el correo.
+   a CSV, genera el tablero HTML y envía el reporte por un SMTP local de
+   prueba, comprobando que el segundo intento no duplica el correo.
 5. Imprime los totales y deja los archivos en `salida/antes/`,
    `salida/despues/`, `salida/consultas_20261027.txt`, `salida/powerbi/`,
    `salida/smtp.log` y `salida/envios_smtp.json`.
@@ -348,8 +349,8 @@ Diagramas: [docs/arquitectura.mmd](docs/arquitectura.mmd) y
 - [x] B4: revisión de `enviar_reporte.py` y versión corregida
 - [x] B5: contenedor Podman, demo y flujo de ejecución
 - [ ] B5: análisis del incidente, despliegue y conectividad Azure en el informe
-- [x] B6: exportación de datos para Power BI
-- [ ] B6: medidas DAX, diseño del tablero y capturas
+- [x] B6: exportación de datos, medidas DAX, diseño y prototipo/captura
+- [ ] B6: `.pbix` validado en Power BI Desktop (Windows)
 - [ ] Informe consolidado en PDF y sustentación
 
 ---

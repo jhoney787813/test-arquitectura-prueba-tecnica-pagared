@@ -12,7 +12,7 @@
 2. Carga incremental de `datos/transacciones_delta_20261028.csv` sobre la misma base.
 3. Generación de los reportes antes y después del delta.
 4. Ejecución de las consultas B3.
-5. Exportación del modelo a CSV para Power BI.
+5. Exportación del modelo a CSV y generación del prototipo HTML del tablero B6.
 6. Envío B4 por SMTP contra un servidor local de prueba, ejecutado dos veces
    para comprobar la idempotencia.
 
@@ -49,6 +49,7 @@ El resultado completo está en `salida/consultas_20261027.txt`.
 - `salida/reporte_ventas_20261027.xlsx` (copia final después del delta)
 - `salida/consultas_20261027.txt`
 - `salida/powerbi/*.csv` (hecho y dimensiones)
+- `salida/powerbi/tablero_ventas.html` (prototipo B6)
 - `salida/smtp.log` y `salida/envios_smtp.json` (B4)
 
 ## 5. Envío idempotente B4
@@ -64,14 +65,21 @@ El servidor local recibió el asunto del reporte. Así se demuestra el envío re
 sin depender de un SMTP corporativo y se evita el correo duplicado del script
 original, sin ocultar fallas.
 
-## 6. Pruebas
+## 6. Tablero B6
+
+El prototipo se genera desde el mismo modelo y reproduce los indicadores del
+diseño: ventas, transacciones, ticket promedio y variación por zona, con
+filtros de fecha, zona y canal. La captura del 27/10 está en
+`parte-6-b6-powerbi/powerbi/capturas/tablero_20261027.png`.
+
+## 7. Pruebas
 
 - `pytest`: 65 pruebas en verde (también dentro del contenedor).
 - `ruff check .`: sin hallazgos (también dentro del contenedor).
 - `openspec validate --changes --strict`: 6/6 cambios válidos.
 - `make podman-test`: 65 pruebas dentro del contenedor.
 
-## 7. Limitaciones
+## 8. Limitaciones
 
 - El demo usa datos de prueba del kit; no toca producción.
 - Power BI Desktop no está disponible en macOS: se exportan los CSV y se
