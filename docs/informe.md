@@ -13,7 +13,9 @@
 
 ## 1. Componente teórico (Parte A)
 
-_Pendiente: 10 respuestas con justificación, máximo 8 líneas cada una._
+> **En progreso:** A1 respondida; A2 a A10 pendientes. El texto completo se
+> redacta en [respuestas.md](../parte-7-parte-a-teoria/respuestas.md) y se
+> incorpora a esta sección al compilar el PDF.
 
 ---
 

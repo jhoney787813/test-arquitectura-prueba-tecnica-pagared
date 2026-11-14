@@ -5,7 +5,8 @@ después de B1 a B6, como lo pidió el usuario.
 
 ## Contenido
 
-- `respuestas.md`: las 10 respuestas con justificación (pendiente).
+- `respuestas.md`: las 10 respuestas con justificación (A1 lista; A2 a A10
+  pendientes).
 - `features/componente-teorico.feature`: historia Gherkin del entregable.
 
 ## Regla
