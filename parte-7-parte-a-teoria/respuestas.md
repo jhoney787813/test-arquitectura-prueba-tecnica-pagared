@@ -1,6 +1,6 @@
 # Parte A — Componente teórico
 
-> **En progreso:** A1 a A4 respondidas; A5 a A10 pendientes. Se procesa al
+> **En progreso:** A1 a A5 respondidas; A6 a A10 pendientes. Se procesa al
 > final, después de B1 a B6.
 
 Cada respuesta debe incluir su justificación y no superar 8 líneas, como pide
@@ -53,6 +53,14 @@ o el volumen/frecuencia hacen el bot frágil; conviene integración o archivo
 contratado.
 
 ## A5. Jenkins — zona horaria del cron
+
+**Respuesta:** Se ejecuta a la **1:00 a. m.** de Colombia (06:00 UTC − 5 h),
+no a las 6:00; el comentario es incorrecto. Para las 6:00 COT: (1) usar
+`0 11 * * *` en UTC; (2) mantener `0 6 * * *` y declarar la zona con
+`TZ=America/Bogota` en el trigger (`cron('TZ=America/Bogota\n0 6 * * *')`).
+La primera es portable; la segunda deja la intención explícita. Colombia no
+tiene horario de verano, así que 11:00 UTC son siempre las 6:00 COT. No
+cambiaría la zona del servidor: afecta todos los jobs.
 
 ## A6. ETL — idempotencia y reintentos
 
