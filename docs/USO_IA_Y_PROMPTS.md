@@ -212,7 +212,7 @@ aprobaciones, AP-09 documentada y commits que referencian la aprobación.
 | Commits | `17c035c`, `8210907`, `b228244`, `7c3c13b`, `cc563d7`, `18a1df8`, `4fb9762` |
 | Pruebas | 58 pruebas con `pytest` en verde |
 | Estilo | `ruff check .` sin hallazgos |
-| OpenSpec | 6/6 cambios válidos con `openspec validate --changes --strict` |
+| OpenSpec | 9/9 cambios válidos con `openspec validate --changes --strict` |
 | Gherkin | 9 `.feature` validados con `gherkin-official` |
 | CI | GitHub Actions en verde para el último commit |
 | Aprobaciones | AP-09 en `openspec/aprobaciones.md` con justificación del usuario |

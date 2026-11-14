@@ -68,7 +68,7 @@ contexto del caso
    [openspec/aprobaciones.md](openspec/aprobaciones.md) (AP-09), no solo en el
    chat.
 4. **Verificación automática.** `openspec validate --changes --strict` valida
-   propuesta, specs, diseño y tareas; hoy pasan 6/6 cambios.
+   propuesta, specs, diseño y tareas; hoy pasan 9/9 cambios.
 5. **Contexto para el agente.** `openspec/config.yaml` concentra el caso, las
    reglas de negocio y la organización por partes; el agente lee una fuente
    estable en lugar de adivinar.
@@ -81,7 +81,7 @@ contexto del caso
 - Cambios: [openspec/changes/](openspec/changes/).
 - Aprobaciones y justificación: [openspec/aprobaciones.md](openspec/aprobaciones.md).
 - Skills para DeepSeek Harness: [.agents/skills/](.agents/skills/).
-- Validación: `make spec-validate` → 6/6 cambios válidos.
+- Validación: `make spec-validate` → 9/9 cambios válidos.
 - Informe consolidado: [INFORME_Jhon_E.pdf](INFORME_Jhon_E.pdf), sección 8.
 
 > OpenSpec no es una dependencia de ejecución del ETL: es el marco de trabajo
@@ -95,7 +95,7 @@ contexto del caso
 | Parte | Entregable | Estado |
 | :---: | :--- | :--- |
 | A | Respuestas teóricas (10 preguntas) → [parte-7](parte-7-parte-a-teoria/) | Respondidas (10/10) |
-| B1 | Análisis del requerimiento y arquitectura → [parte-1](parte-1-b1-analisis/) | Completo |
+| B1 | Análisis del requerimiento y arquitectura → [parte-1](parte-1-b1-analisis/) | Contenido completo; pendiente recorte a 2 páginas |
 | B2 | Pipeline ETL, modelo dimensional, reporte y pruebas → [parte-2](parte-2-b2-pipeline/) | Implementado y probado |
 | B3 | Consultas SQL → [parte-3](parte-3-b3-sql/) | Implementado |
 | B4 | Revisión y envío corregido → [parte-4](parte-4-b4-revision/) | Implementado (v2 idempotente) |
@@ -226,15 +226,19 @@ El plan está dividido en un cambio por parte:
   reporte.
 - `b3-consultas-sql`: consultas y optimización.
 - `b4-revision-envio`: revisión y corrección del envío.
+- `b5-operacion-despliegue`: contenedor, incidente, despliegue y Azure.
+- `b6-tablero-powerbi`: DAX, diseño, datos, prototipo y GitHub Pages.
+- `parte-a-teoria`: las diez respuestas.
 - `refactor-organizacion-por-partes`: organización del repositorio y Gherkin.
+- `plan-evolucion-entrega`: brechas pendientes para futuras iteraciones.
 
 La Parte A se trabajó al final, como se acordó. Cada cambio tiene
 `proposal.md`, `specs/`, `design.md`, `tasks.md` y, cuando aplica,
 `aprobacion.md` con la justificación del usuario.
 
-> El cambio `implementar-solucion-prueba-tecnica` es el plan paraguas original;
-> queda temporalmente hasta cerrar B5 y B6 en OpenSpec y se retira con la
-> aprobación AP-08. El detalle del marco está en la sección 0.
+> El cambio paraguas original se retiró: su contenido quedó distribuido en los
+> cambios B1-B6, Parte A y el plan de evolución. El detalle del marco está en la
+> sección 0.
 
 Comandos útiles:
 

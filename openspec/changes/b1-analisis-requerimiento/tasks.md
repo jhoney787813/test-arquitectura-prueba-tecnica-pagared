@@ -10,6 +10,6 @@
 ## 2. Cierre de la sección B1
 
 - [ ] 2.1 Recortar la sección 2 a máximo dos páginas para el PDF y verificar el conteo al compilar
-- [ ] 2.2 Revisar que cada requerimiento funcional tenga criterio de aceptación y una tarea asociada en B2-B6
-- [ ] 2.3 Verificar que el plan de fases distinga lo que recibe Laura el lunes de lo que viene después
+- [x] 2.2 Revisar que cada requerimiento funcional tenga criterio de aceptación y una tarea asociada en B2-B6
+- [x] 2.3 Verificar que el plan de fases distinga lo que recibe Laura el lunes de lo que viene después
 - [ ] 2.4 Actualizar `docs/informe.md` con las respuestas que lleguen de Laura y marcar las que sigan abiertas

@@ -55,7 +55,7 @@ Los resultados quedan en `salida/` y en `docs/RESULTADOS_EJECUCION.md`.
 | :--- | :--- |
 | Pruebas | 65 en local y 65 dentro del contenedor |
 | Estilo | `ruff check .` sin hallazgos |
-| OpenSpec | 6/6 cambios válidos con `openspec validate --changes --strict` |
+| OpenSpec | 9/9 cambios válidos con `openspec validate --changes --strict` |
 | Datos | 5.651 transacciones base + 2.005 del delta; 7.656 en el hecho |
 | Reporte | `salida/reporte_ventas_20261027.xlsx` y `.eml` |
 | SQL | `salida/consultas_20261027.txt` |
