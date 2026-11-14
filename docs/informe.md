@@ -13,8 +13,8 @@
 
 ## 1. Componente teórico (Parte A)
 
-> **En progreso:** A1 respondida; A2 a A10 pendientes. El texto completo se
-> redacta en [respuestas.md](../parte-7-parte-a-teoria/respuestas.md) y se
+> **En progreso:** A1 y A2 respondidas; A3 a A10 pendientes. El texto completo
+> se redacta en [respuestas.md](../parte-7-parte-a-teoria/respuestas.md) y se
 > incorpora a esta sección al compilar el PDF.
 
 ---

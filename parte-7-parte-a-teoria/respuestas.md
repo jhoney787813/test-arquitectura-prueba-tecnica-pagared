@@ -1,7 +1,7 @@
 # Parte A — Componente teórico
 
-> **En progreso:** A1 respondida; A2 a A10 pendientes. Se procesa al final,
-> después de B1 a B6.
+> **En progreso:** A1 y A2 respondidas; A3 a A10 pendientes. Se procesa al
+> final, después de B1 a B6.
 
 Cada respuesta debe incluir su justificación y no superar 8 líneas, como pide
 la prueba. Esta sección alimenta la sección 1 del informe consolidado.
@@ -21,6 +21,15 @@ GROUP BY p.cod_punto, p.nombre;
 ```
 
 ## A2. SQL — COUNT y NULL
+
+**Respuesta:** La primera devuelve **700** y la segunda **0**. `estado <>
+'ANULADA'` cuenta las 700 APROBADA; las 200 ANULADA no cumplen y las 100 NULL
+quedan en UNKNOWN, que el `WHERE` descarta. En la segunda, `NOT IN ('ANULADA',
+NULL)` equivale a `estado <> 'ANULADA' AND estado <> NULL`; como `x <> NULL` es
+UNKNOWN para toda fila, ninguna pasa y el `COUNT` es 0.
+
+**Para contar las 800 no anuladas incluyendo NULL:** `WHERE estado <> 'ANULADA'
+OR estado IS NULL`. Para las 700 no nulas: `NOT IN ('ANULADA')`, sin el NULL.
 
 ## A3. Python — suma con float
 
