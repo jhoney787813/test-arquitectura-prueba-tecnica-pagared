@@ -1,6 +1,6 @@
 # Parte A — Componente teórico
 
-> **En progreso:** A1 a A7 respondidas; A8 a A10 pendientes. Se procesa al
+> **En progreso:** A1 a A8 respondidas; A9 y A10 pendientes. Se procesa al
 > final, después de B1 a B6.
 
 Cada respuesta debe incluir su justificación y no superar 8 líneas, como pide
@@ -84,6 +84,15 @@ sabiendo que hay que purgar copias y cachés. Después se previene: `.env` en
 mínimos y gestor de secretos. Un `rebase` no basta y no debe ser el primer paso.
 
 ## A8. Carga incremental — anulaciones tardías
+
+**Respuesta:** Porque el incremental filtra por `fecha_transaccion`, no por la
+fecha de modificación: una venta del día 10 anulada el 12 conserva su
+`fecha_transaccion` del 10 y queda fuera del próximo cargue, así que el tablero
+sigue mostrando el estado viejo. Rediseñaría con un watermark de
+`fecha_actualizacion` (con ventana de solape), un `MERGE/UPSERT` por
+`id_transaccion` que actualice solo si la modificación es más reciente, y el
+delta/CDC del core como fuente de cambios. Agregaría control de cargas y una
+reconciliación periódica contra el core para detectar cambios o borrados perdidos.
 
 ## A9. Modelado — historia de zonas
 
