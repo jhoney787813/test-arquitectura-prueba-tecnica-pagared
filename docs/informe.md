@@ -3,11 +3,12 @@
 **Candidato:** Jhon E.  
 **Empresa (caso ficticio):** PagaRed S.A.S. — Grupo Réditos  
 **Fecha de corte de los resultados:** 27 de octubre de 2026  
-**Versión del documento:** borrador de trabajo (se compila a PDF al final)
+**Versión del documento:** consolidada (21 páginas)
 
-> Este archivo es la fuente del informe `INFORME_Jhon_E.pdf`. Las secciones 1 y
-> 3 a 7 se completan a medida que avanza la solución; la sección 2 (B1) ya está
-> desarrollada porque es la entrada de las partes B2 a B6.
+> Este archivo conserva las secciones base del informe. La versión completa,
+> con las secciones 1 a 8 y los anexos, está en
+> [informe_consolidado.md](informe_consolidado.md) y en
+> [INFORME_Jhon_E.pdf](../INFORME_Jhon_E.pdf).
 
 ---
 
@@ -161,26 +162,29 @@ aviso.
 
 ## 3. Pipeline de datos (B2)
 
-_Pendiente: reglas de limpieza, modelo implementado, resultados del 27/10 antes
-y después del delta._
+Contenido completo en [secciones/b2.md](secciones/b2.md) y en el PDF
+consolidado.
 
 ---
 
 ## 4. SQL (B3)
 
-_Pendiente: consultas y resultados._
+Contenido completo en [secciones/b3.md](secciones/b3.md) y en el PDF
+consolidado.
 
 ---
 
 ## 5. Revisión de código (B4)
 
-_Pendiente: hallazgos por severidad y explicación de los síntomas._
+Contenido completo en [secciones/b4.md](secciones/b4.md) y en el PDF
+consolidado.
 
 ---
 
 ## 6. Operación (B5)
 
-_Pendiente: causa raíz del incidente, despliegue y conectividad con Azure._
+Contenido completo en [secciones/b5.md](secciones/b5.md) y en el PDF
+consolidado.
 
 ---
 

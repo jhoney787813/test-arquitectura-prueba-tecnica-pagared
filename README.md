@@ -4,7 +4,7 @@
 - **Contexto:** prueba técnica de Desarrollador de Arquitectura de Software (Grupo Réditos — Dirección de Inteligencia Empresarial)
 - **Fecha de corte de los resultados:** 27 de octubre de 2026
 - **Fecha de entrega:** 14 de noviembre de 2026
-- **Repositorio:** privado (se comparte con el evaluador al finalizar)
+- **Repositorio:** [github.com/jhoney787813/test-arquitectura-prueba-tecnica-pagared](https://github.com/jhoney787813/test-arquitectura-prueba-tecnica-pagared.git) (privado; se comparte con el evaluador)
 
 Solución al caso de PagaRed S.A.S.: automatizar el reporte diario de ventas que
 hoy prepara Paola en Excel durante tres horas, dejarlo disponible para Power BI
@@ -29,7 +29,7 @@ y operarlo de forma confiable (idempotente, observable y con alertas).
 | B4 | Revisión y envío corregido → [parte-4](parte-4-b4-revision/) | Implementado (v2 idempotente) |
 | B5 | Operación, incidente y despliegue → [parte-5](parte-5-b5-operacion/) | Contenedor y demo; falta análisis del incidente |
 | B6 | Tablero de Power BI → [parte-6](parte-6-b6-powerbi/) | Prototipo HTML + DAX + captura; `.pbix` pendiente (macOS) |
-| — | Informe consolidado PDF | Pendiente de compilar |
+| — | Informe consolidado PDF | [INFORME_Jhon_E.pdf](INFORME_Jhon_E.pdf) |
 
 ---
 
@@ -56,6 +56,7 @@ Reglas de negocio tomadas del correo de la Gerente Comercial:
 ```text
 .
 ├── README.md
+├── INFORME_Jhon_E.pdf          # informe consolidado (21 páginas)
 ├── pyproject.toml              # configuración, dependencias, pytest y ruff
 ├── Makefile                    # atajos: setup, test, lint, perfil
 ├── datos/                      # CSV de entrada del kit (sin transformar)
@@ -207,6 +208,7 @@ make etl-delta     # pipeline + delta del 28/10
 make consultas     # B3 sobre db/pagared.db
 make bi-export     # CSV para Power BI en parte-6.../powerbi/datos
 make b6            # datos + tablero HTML + captura del prototipo
+make informe       # compila INFORME_Jhon_E.pdf (Chrome headless)
 ```
 
 **Podman:**

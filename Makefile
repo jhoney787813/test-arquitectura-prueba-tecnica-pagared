@@ -12,7 +12,7 @@ FECHA_COMPACTA = $(shell echo $(FECHA) | tr -d -)
 
 .DEFAULT_GOAL := ayuda
 
-.PHONY: ayuda setup test lint fmt perfil etl etl-delta consultas bi-export b6 b6-dashboard b6-captura podman-build podman-demo podman-test spec spec-validate limpiar
+.PHONY: ayuda setup test lint fmt perfil etl etl-delta consultas bi-export b6 b6-dashboard b6-captura informe podman-build podman-demo podman-test spec spec-validate limpiar
 
 ayuda:
 	@echo "Objetivos disponibles:"
@@ -26,6 +26,7 @@ ayuda:
 	@echo "  make consultas   Ejecuta las consultas B3"
 	@echo "  make bi-export   Exporta el modelo a CSV para Power BI"
 	@echo "  make b6          Genera tablero HTML, captura y datos de Power BI"
+	@echo "  make informe     Compila el informe consolidado en PDF"
 	@echo "  make podman-build  Construye la imagen con Podman"
 	@echo "  make podman-demo   Ejecuta el demo completo en un contenedor"
 	@echo "  make podman-test   Ejecuta pytest dentro del contenedor"
@@ -77,6 +78,9 @@ b6-captura: b6-dashboard
 		--window-size=1440,1000 --virtual-time-budget=4000 \
 		--screenshot="$(CURDIR)/parte-6-b6-powerbi/powerbi/capturas/tablero_$(FECHA_COMPACTA).png" \
 		"file://$(CURDIR)/parte-6-b6-powerbi/powerbi/tablero_ventas.html"
+
+informe:
+	$(BIN)/python parte-5-b5-operacion/scripts/generar_informe.py
 
 podman-build:
 	$(PODMAN) build -t $(IMAGEN) -f parte-5-b5-operacion/infra/Containerfile .

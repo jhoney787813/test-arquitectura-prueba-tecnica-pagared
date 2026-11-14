@@ -30,6 +30,8 @@ dev = [
     "pytest>=8.0",
     "ruff>=0.6",
     "gherkin-official>=43.0",
+    "markdown>=3.6",
+    "pypdf>=5.0",
 ]
 
 [tool.setuptools]
