@@ -1,0 +1,54 @@
+name: Publicar tablero en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "parte-6-b6-powerbi/powerbi/tablero_ventas.html"
+      - "INFORME_Jhon_E.pdf"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar sitio estático
+        run: |
+          set -euo pipefail
+          mkdir -p site
+          cp parte-6-b6-powerbi/powerbi/tablero_ventas.html site/index.html
+          cp INFORME_Jhon_E.pdf site/INFORME_Jhon_E.pdf
+          touch site/.nojekyll
+          python3 .github/scripts/preparar_pages.py
+
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+
+      - name: Subir artefacto
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Desplegar en Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

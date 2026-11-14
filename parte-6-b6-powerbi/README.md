@@ -11,6 +11,15 @@ medidas DAX explícitas.
   conectarlos desde Power BI en macOS.
 - `features/tablero-ventas.feature`: historia Gherkin del tablero.
 
+## Publicación
+
+El tablero está publicado en GitHub Pages:
+
+**https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/**
+
+El workflow `.github/workflows/pages.yml` lo despliega automáticamente al
+cambiar `tablero_ventas.html`, el informe PDF o el propio workflow.
+
 ## Exportación de datos
 
 ```bash

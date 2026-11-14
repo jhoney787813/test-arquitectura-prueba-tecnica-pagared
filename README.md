@@ -16,6 +16,8 @@ y operarlo de forma confiable (idempotente, observable y con alertas).
 >
 > **Estado:** solución implementada y verificada. El pipeline B2, las consultas B3, la revisión B4, la operación B5, el prototipo B6, las 65 pruebas y el demo en Podman están en el repositorio. El `.pbix` de Power BI queda pendiente de un equipo Windows, como se explica en el informe.
 >
+> 🌐 **Tablero publicado:** [jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared](https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/) — dashboard B6 funcional, con filtros y datos del 27/10.
+>
 > 🧭 **Construido con OpenSpec 2.0**, el framework de *spec-driven development* para agentes de IA. No se trabajó con prompts aislados: cada parte tiene propuesta, especificación, diseño, tareas, validación y, cuando aplica, aprobación humana registrada.
 
 ---
@@ -83,7 +85,7 @@ contexto del caso
 | B3 | Consultas SQL → [parte-3](parte-3-b3-sql/) | Implementado |
 | B4 | Revisión y envío corregido → [parte-4](parte-4-b4-revision/) | Implementado (v2 idempotente) |
 | B5 | Operación, incidente y despliegue → [parte-5](parte-5-b5-operacion/) | Contenedor, demo y análisis del incidente documentado |
-| B6 | Tablero de Power BI → [parte-6](parte-6-b6-powerbi/) | Prototipo HTML + DAX + captura; `.pbix` pendiente (macOS) |
+| B6 | Tablero de Power BI → [parte-6](parte-6-b6-powerbi/) | Prototipo publicado en [GitHub Pages](https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/); `.pbix` pendiente (macOS) |
 | — | Informe consolidado PDF | [INFORME_Jhon_E.pdf](INFORME_Jhon_E.pdf) |
 
 ---
@@ -294,7 +296,7 @@ Resultados del demo (fecha de corte 2026-10-27):
 | Antes del delta | $954.497.200 | 2.440 |
 | Después del delta | $916.270.700 | 2.452 |
 
-El delta insertó 2.005 transacciones, actualizó 52 e ignoró 53; la base base
+El delta insertó 2.005 transacciones, actualizó 52 e ignoró 53; la base
 descartó 314 filas por calidad y el delta 1 versión obsoleta.
 
 La imagen define un usuario `etl` no root. Para que el demo escriba en los
@@ -304,6 +306,19 @@ propios. El detalle del flujo está en
 [parte-5-b5-operacion/infra/](parte-5-b5-operacion/infra/). Los resultados
 numéricos del demo están en
 [docs/RESULTADOS_EJECUCION.md](docs/RESULTADOS_EJECUCION.md).
+
+### 4.4 Tablero en GitHub Pages
+
+El tablero B6 se publica automáticamente como página estática:
+
+**https://jhoney787813.github.io/test-arquitectura-prueba-tecnica-pagared/**
+
+El workflow [pages.yml](.github/workflows/pages.yml) copia
+`parte-6-b6-powerbi/powerbi/tablero_ventas.html` como `index.html`, adjunta el
+PDF y despliega con GitHub Actions cada vez que cambia el tablero, el informe o
+el propio workflow. No requiere servidor: el HTML es autónomo, con los datos
+del modelo embebidos y los filtros de fecha, zona y canal.
+
 
 ---
 
