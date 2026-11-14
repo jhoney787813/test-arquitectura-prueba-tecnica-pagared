@@ -1,6 +1,6 @@
 # Parte A — Componente teórico
 
-> **En progreso:** A1 a A6 respondidas; A7 a A10 pendientes. Se procesa al
+> **En progreso:** A1 a A7 respondidas; A8 a A10 pendientes. Se procesa al
 > final, después de B1 a B6.
 
 Cada respuesta debe incluir su justificación y no superar 8 líneas, como pide
@@ -74,6 +74,14 @@ En Jenkins, `disableConcurrentBuilds()` y un lock evitan dos ejecuciones; no
 mataría el proceso anterior a ciegas porque puede dejar escrituras a medias.
 
 ## A7. Seguridad y Git — secreto en el repositorio
+
+**Respuesta:** No está resuelto: el commit conserva el secreto en el historial,
+y también puede estar en clones, forks, cachés de CI y logs. Primero se rota y
+revoca la contraseña de producción y se auditan accesos; luego se elimina del
+historial con `git filter-repo` (o BFG) y se hace force-push coordinado,
+sabiendo que hay que purgar copias y cachés. Después se previene: `.env` en
+`.gitignore`, `.env.example`, escaneo de secretos (gitleaks/GitLab), permisos
+mínimos y gestor de secretos. Un `rebase` no basta y no debe ser el primer paso.
 
 ## A8. Carga incremental — anulaciones tardías
 
