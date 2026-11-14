@@ -8,9 +8,10 @@ la prueba. Esta sección alimenta la sección 1 del informe consolidado.
 
 ## A1. SQL — LEFT JOIN y filtro en WHERE
 
-**Respuesta:** No cumple: el `WHERE t.estado` descarta los `t.estado = NULL` y
-convierte el LEFT JOIN en INNER JOIN; `SUM` da NULL y `NOT IN (0)` no lo corrige.
-Se mueve el filtro al `ON` y se usa `COALESCE(SUM(t.valor), 0)`.
+**Respuesta:** No cumple. El `OR t.valor = 0` no crea filas para los puntos
+sin transacciones: `t.estado` y `t.valor` son NULL y `NULL = 'APROBADA' OR
+NULL = 0` da UNKNOWN, así que el WHERE los elimina (y además incluye ceros no
+aprobados). Se mueve el filtro al `ON` y se usa `COALESCE(SUM(t.valor), 0)`.
 
 ```sql
 SELECT p.cod_punto, p.nombre, COALESCE(SUM(t.valor), 0) AS ventas
