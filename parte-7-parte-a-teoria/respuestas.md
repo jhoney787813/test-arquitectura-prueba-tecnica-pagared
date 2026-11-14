@@ -1,6 +1,6 @@
 # Parte A — Componente teórico
 
-> **En progreso:** A1 y A2 respondidas; A3 a A10 pendientes. Se procesa al
+> **En progreso:** A1 a A3 respondidas; A4 a A10 pendientes. Se procesa al
 > final, después de B1 a B6.
 
 Cada respuesta debe incluir su justificación y no superar 8 líneas, como pide
@@ -32,6 +32,14 @@ UNKNOWN para toda fila, ninguna pasa y el `COUNT` es 0.
 OR estado IS NULL`. Para las 700 no nulas: `NOT IN ('ANULADA')`, sin el NULL.
 
 ## A3. Python — suma con float
+
+**Respuesta:** No es solo redondeo: `float` usa binario y no representa exacto
+valores como 0,10; al sumar miles el error se acumula. Se resuelve leyendo los
+importes como texto y sumando con `Decimal` (o enteros de centavos), con
+precisión y `ROUND_HALF_UP` solo al presentar; el separador decimal se
+interpreta con el locale y los nulos se validan/normalizan antes de sumar.
+**Otras capas:** parseo CSV, base (`FLOAT` vs `DECIMAL`), SQL, Excel/Power BI
+y APIs/JSON que serializan como float.
 
 ## A4. RPA — Selenium y esperas
 
