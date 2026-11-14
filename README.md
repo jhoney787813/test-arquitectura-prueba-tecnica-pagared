@@ -15,6 +15,61 @@ y operarlo de forma confiable (idempotente, observable y con alertas).
 > 🔗 **Repositorio:** [github.com/jhoney787813/test-arquitectura-prueba-tecnica-pagared](https://github.com/jhoney787813/test-arquitectura-prueba-tecnica-pagared.git)
 >
 > **Estado:** solución implementada y verificada. El pipeline B2, las consultas B3, la revisión B4, la operación B5, el prototipo B6, las 65 pruebas y el demo en Podman están en el repositorio. El `.pbix` de Power BI queda pendiente de un equipo Windows, como se explica en el informe.
+>
+> 🧭 **Construido con OpenSpec 2.0**, el framework de *spec-driven development* para agentes de IA. No se trabajó con prompts aislados: cada parte tiene propuesta, especificación, diseño, tareas, validación y, cuando aplica, aprobación humana registrada.
+
+---
+
+## 0. OpenSpec: el framework de IA con el que se construyó la solución
+
+Esta prueba no se resolvió con una sucesión de prompts sin contrato. Se usó
+[OpenSpec](https://openspec.dev) 2.0, un framework de **spec-driven development
+para agentes de IA**, integrado con DeepSeek Harness mediante las skills de
+`.agents/skills/`.
+
+El flujo de trabajo fue:
+
+```text
+contexto del caso
+   → proposal.md (por qué y qué cambia)
+   → specs/<capacidad>/spec.md (requisitos y escenarios)
+   → design.md (decisiones y riesgos)
+   → tasks.md (pasos verificables)
+   → implementación
+   → openspec validate --changes --strict
+   → aprobación / archivo del cambio
+```
+
+### Por qué OpenSpec fue importante
+
+1. **Contrato antes de código.** Cada feat nació como un cambio con alcance,
+   requisitos y criterios de aceptación; el agente no inventó el alcance sobre
+   la marcha.
+2. **Trazabilidad real.** Un requisito se puede seguir desde el correo de Laura
+   hasta el spec, la tarea, el commit y la evidencia de ejecución.
+3. **Control humano.** El usuario aprobó el refactor y su justificación quedó en
+   [openspec/aprobaciones.md](openspec/aprobaciones.md) (AP-09), no solo en el
+   chat.
+4. **Verificación automática.** `openspec validate --changes --strict` valida
+   propuesta, specs, diseño y tareas; hoy pasan 6/6 cambios.
+5. **Contexto para el agente.** `openspec/config.yaml` concentra el caso, las
+   reglas de negocio y la organización por partes; el agente lee una fuente
+   estable en lugar de adivinar.
+6. **Gherkin alineado.** Las historias de `parte-*/features/*.feature` son la
+   vista de negocio de los specs y se validan con el parser oficial.
+
+### Evidencia en el repositorio
+
+- Configuración y reglas: [openspec/config.yaml](openspec/config.yaml).
+- Cambios: [openspec/changes/](openspec/changes/).
+- Aprobaciones y justificación: [openspec/aprobaciones.md](openspec/aprobaciones.md).
+- Skills para DeepSeek Harness: [.agents/skills/](.agents/skills/).
+- Validación: `make spec-validate` → 6/6 cambios válidos.
+- Informe consolidado: [INFORME_Jhon_E.pdf](INFORME_Jhon_E.pdf), sección 8.
+
+> OpenSpec no es una dependencia de ejecución del ETL: es el marco de trabajo
+> con el que se planificó, verificó y documentó la solución. El pipeline corre
+> igual sin él; la diferencia es la trazabilidad y el control del proceso.
 
 ---
 
@@ -27,7 +82,7 @@ y operarlo de forma confiable (idempotente, observable y con alertas).
 | B2 | Pipeline ETL, modelo dimensional, reporte y pruebas → [parte-2](parte-2-b2-pipeline/) | Implementado y probado |
 | B3 | Consultas SQL → [parte-3](parte-3-b3-sql/) | Implementado |
 | B4 | Revisión y envío corregido → [parte-4](parte-4-b4-revision/) | Implementado (v2 idempotente) |
-| B5 | Operación, incidente y despliegue → [parte-5](parte-5-b5-operacion/) | Contenedor y demo; falta análisis del incidente |
+| B5 | Operación, incidente y despliegue → [parte-5](parte-5-b5-operacion/) | Contenedor, demo y análisis del incidente documentado |
 | B6 | Tablero de Power BI → [parte-6](parte-6-b6-powerbi/) | Prototipo HTML + DAX + captura; `.pbix` pendiente (macOS) |
 | — | Informe consolidado PDF | [INFORME_Jhon_E.pdf](INFORME_Jhon_E.pdf) |
 
@@ -156,12 +211,13 @@ El plan está dividido en un cambio por parte:
 - `b4-revision-envio`: revisión y corrección del envío.
 - `refactor-organizacion-por-partes`: organización del repositorio y Gherkin.
 
-B5, B6 y la Parte A se agregan como cambios independientes; la Parte A queda al
-final, como se acordó. Cada cambio tiene `proposal.md`, `specs/`, `design.md`,
-`tasks.md` y, cuando aplica, `aprobacion.md` con la justificación del usuario.
+La Parte A se trabajó al final, como se acordó. Cada cambio tiene
+`proposal.md`, `specs/`, `design.md`, `tasks.md` y, cuando aplica,
+`aprobacion.md` con la justificación del usuario.
 
 > El cambio `implementar-solucion-prueba-tecnica` es el plan paraguas original;
-> queda temporalmente hasta crear B5 y B6 y se retira con la aprobación AP-08.
+> queda temporalmente hasta cerrar B5 y B6 en OpenSpec y se retira con la
+> aprobación AP-08. El detalle del marco está en la sección 0.
 
 Comandos útiles:
 
