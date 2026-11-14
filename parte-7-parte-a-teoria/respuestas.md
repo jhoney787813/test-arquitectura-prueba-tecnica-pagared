@@ -1,7 +1,6 @@
 # Parte A — Componente teórico
 
-> **En progreso:** A1 a A9 respondidas; A10 pendiente. Se procesa al final,
-> después de B1 a B6.
+> **Completo:** A1 a A10 respondidas. Pendiente incorporarlas al PDF del informe.
 
 Cada respuesta debe incluir su justificación y no superar 8 líneas, como pide
 la prueba. Esta sección alimenta la sección 1 del informe consolidado.
@@ -106,3 +105,12 @@ cierra la versión anterior y se inserta la nueva, y el hecho guarda el
 histórico ni los cambios múltiples.
 
 ## A10. Criterio — automatizar un proceso manual
+
+**Respuesta:** (1) Mapear el proceso con la analista (entradas, pasos, salidas
+y excepciones); (2) medir tiempo, errores y cuellos de botella (línea base de
+3 h); (3) acordar reglas, fuentes y criterios de aceptación; (4) priorizar
+por impacto/esfuerzo y definir el MVP; (5) validar el TO-BE y el plan con ella
+antes de codificar (la revisión de resultados es posterior). **Primera semana:**
+mapa AS-IS/TO-BE, línea base, requisitos y criterios, backlog priorizado,
+riesgos de acceso/seguridad y un prototipo del paso de mayor valor validado
+con la analista.
